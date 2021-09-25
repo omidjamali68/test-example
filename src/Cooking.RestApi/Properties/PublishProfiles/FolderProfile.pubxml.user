@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\Klap.ir\Desktop\Api</_PublishTargetUrl>
+    <History>True|2021-06-23T20:11:34.3082008Z;True|2021-06-24T00:20:04.7803512+04:30;True|2021-06-21T20:19:53.7507147+04:30;True|2021-06-20T18:26:00.7371062+04:30;</History>
+  </PropertyGroup>
+</Project>

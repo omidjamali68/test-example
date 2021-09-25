@@ -1,0 +1,15 @@
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\obj\Debug\netstandard2.1\Cooking.Infrastructure.csproj.AssemblyReference.cache
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\obj\Debug\netstandard2.1\Cooking.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\obj\Debug\netstandard2.1\Cooking.Infrastructure.AssemblyInfoInputs.cache
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\obj\Debug\netstandard2.1\Cooking.Infrastructure.AssemblyInfo.cs
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\obj\Debug\netstandard2.1\Cooking.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\bin\Debug\netstandard2.1\Cooking.Infrastructure.deps.json
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\bin\Debug\netstandard2.1\Cooking.Infrastructure.dll
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\bin\Debug\netstandard2.1\Cooking.Infrastructure.pdb
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\bin\Debug\netstandard2.1\Cooking.Entities.dll
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\bin\Debug\netstandard2.1\Cooking.Settings.dll
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\bin\Debug\netstandard2.1\Cooking.Entities.pdb
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\bin\Debug\netstandard2.1\Cooking.Settings.pdb
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\obj\Debug\netstandard2.1\Cooking.Infrastructure.csproj.CopyComplete
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\obj\Debug\netstandard2.1\Cooking.Infrastructure.dll
+D:\Dev\projects\cooking-back\src\Cooking.Infrastructure\obj\Debug\netstandard2.1\Cooking.Infrastructure.pdb

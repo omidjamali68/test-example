@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ContractTemplateServices\**" />
+    <EmbeddedResource Remove="ContractTemplateServices\**" />
+    <None Remove="ContractTemplateServices\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cooking.Entities\Cooking.Entities.csproj" />
+    <ProjectReference Include="..\Cooking.Infrastructure\Cooking.Infrastructure.csproj" />
+    <ProjectReference Include="..\Cooking.Settings\Cooking.Settings.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\" />
+  </ItemGroup>
+
+</Project>

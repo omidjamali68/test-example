@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = Cooking.RestApi
+build_property.ProjectDir = D:\Dev\projects\cooking-back\src\Cooking.RestApi\
