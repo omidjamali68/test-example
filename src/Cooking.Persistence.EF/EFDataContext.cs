@@ -49,7 +49,8 @@ namespace Cooking.Persistence.EF
         public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
         public DbSet<RecipeStep> RecipeSteps { get; set; }
         public DbSet<StepOperation> StepOperations { get; set; }
-
+        
+        
         public override ChangeTracker ChangeTracker
         {
             get
