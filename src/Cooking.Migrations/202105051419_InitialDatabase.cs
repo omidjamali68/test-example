@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using Cooking.Migrations.Scripts;
 using FluentMigrator;
 
@@ -24,104 +25,91 @@ namespace Cooking.Migrations
 
             #endregion
 
-            #region RoutinePayments
+            #region Documents
 
-            Create.Table("RoutinePayments")
-                .WithColumn("Id").AsInt64().Identity().PrimaryKey()
-                .WithColumn("PayVal").AsDouble().NotNullable()
-                .WithColumn("PayDate").AsDateTime().NotNullable()
-                .WithColumn("IsCharity").AsBoolean().WithDefaultValue(false)
-                .WithColumn("ApplicationUserId").AsGuid().NotNullable()
-                .ForeignKey("FK_ApplicationUsers_RoutinePayments", "ApplicationUsers", "Id")
-                .OnDelete(Rule.Cascade);
-
-            #endregion
-
-            #region PaymentImages
-
-            Create.Table("PaymentImages")
-                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("FileAddress").AsString(400).NotNullable()
-                .WithColumn("RoutinePaymentId").AsInt64().NotNullable()
-                .ForeignKey("FK_RoutinePayments_PaymentImages", "RoutinePayments", "Id")
-                .OnDelete(Rule.Cascade);
+            Create.Table("Documents")
+                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+                .WithColumn("Data").AsBinary(Int32.MaxValue)
+                .WithColumn("FileName").AsString(50).Nullable()
+                .WithColumn("Extension").AsString(10).Nullable()
+                .WithColumn("Status").AsInt16().NotNullable()
+                .WithColumn("CreationDate").AsDateTime2().NotNullable();
 
             #endregion
 
-            #region Managements
+            Create.Table("IngredientUnits")
+                .WithColumn("Id").AsInt32().PrimaryKey().NotNullable().Identity()
+                .WithColumn("Title").AsString(50).NotNullable();
 
-            Create.Table("Managements")
-                .WithColumn("Id").AsInt32().PrimaryKey().Identity()
-                .WithColumn("DateIn").AsDateTime().NotNullable()
-                .WithColumn("DateOut").AsDateTime().Nullable()
-                .WithColumn("ApplicationUserId").AsGuid().NotNullable()
-                .ForeignKey("FK_ApplicationUsers_Managements", "ApplicationUsers", "Id")
-                .OnDelete(Rule.Cascade);
+            Create.Table("Ingredients")
+                .WithColumn("Id").AsInt64().PrimaryKey().NotNullable().Identity()
+                .WithColumn("Title").AsString(70).NotNullable()
+                .WithColumn("AvatarId").AsGuid().NotNullable()
+                .WithColumn("IngredientUnitId").AsInt32().NotNullable()
+                .ForeignKey("FK_IngredientUnits_Ingredients", "IngredientUnits", "Id")
+                .OnDelete(Rule.None);
 
-            #endregion
+            Create.Table("Nationalities")
+                .WithColumn("Id").AsInt32().PrimaryKey().NotNullable().Identity()
+                .WithColumn("Name").AsString(100).NotNullable();
 
-            #region Loans
+            Create.Table("RecipeCategories")
+                .WithColumn("Id").AsInt32().PrimaryKey().NotNullable().Identity()
+                .WithColumn("Title").AsString(50).NotNullable();
 
-            Create.Table("Loans")
-                .WithColumn("Id").AsInt32().PrimaryKey().Identity()
-                .WithColumn("LoanVal").AsDouble().NotNullable()
-                .WithColumn("InstallmentCount").AsInt16().NotNullable()
-                .WithColumn("InstallmentMonthPeriod").AsInt16().NotNullable()
-                .WithColumn("InstallmentVal").AsDouble().NotNullable()
-                .WithColumn("GetDate").AsDateTime().NotNullable()
-                .WithColumn("IsFinished").AsBoolean().WithDefaultValue(false)
-                .WithColumn("ApplicationUserId").AsGuid().NotNullable()
-                .ForeignKey("FK_ApplicationUsers_Loans", "ApplicationUsers", "Id")
-                .OnDelete(Rule.Cascade);
+            Create.Table("Recipes")
+                .WithColumn("Id").AsInt64().PrimaryKey().NotNullable().Identity()
+                .WithColumn("FoodName").AsString(100).NotNullable()
+                .WithColumn("Duration").AsInt16().NotNullable()
+                .WithColumn("RecipeCategoryId").AsInt32().NotNullable()
+                .ForeignKey("FK_RecipeCategories_Recipes", "RecipeCategories", "Id")
+                .OnDelete(Rule.None)
+                .WithColumn("NationalityId").AsInt32().NotNullable()
+                .ForeignKey("FK_Nationalities_Recipes", "Nationalities", "Id")
+                .OnDelete(Rule.None);
 
-            #endregion
+            Create.Table("RecipeDocuments")
+                .WithColumn("RecipeId").AsInt64().NotNullable()
+                .ForeignKey("FK_Recipes_RecipeDocuments", "Recipes", "Id")
+                .OnDelete(Rule.Cascade)
+                .WithColumn("DocumentId").AsGuid().NotNullable()
+                .WithColumn("Extension").AsString(10).NotNullable();
 
-            #region LoanInstallments
+            Create.Table("RecipeIngredient")
+                .WithColumn("RecipeId").AsInt64().NotNullable()
+                .ForeignKey("FK_Recipes_RecipeIngredients", "Recipes", "Id")
+                .OnDelete(Rule.Cascade)
+                .WithColumn("IngredientId").AsInt64().NotNullable()
+                .ForeignKey("FK_Ingredients_RecipeIngredients", "Ingredients", "Id")
+                .OnDelete(Rule.None);
 
-            Create.Table("LoanInstallments")
-                .WithColumn("Id").AsInt32().PrimaryKey().Identity()
-                .WithColumn("InstallmentDate").AsDateTime().NotNullable()
-                .WithColumn("PayVal").AsDouble().NotNullable()
-                .WithColumn("PayDate").AsDateTime().Nullable()
-                .WithColumn("LoanId").AsInt32().NotNullable()
-                .ForeignKey("FK_Loans_LoanInstallments", "Loans", "Id")
-                .OnDelete(Rule.Cascade);
+            Create.Table("StepOperations")
+                .WithColumn("Id").AsInt64().NotNullable().PrimaryKey().Identity()
+                .WithColumn("Title").AsString(100).NotNullable()
+                .WithColumn("AvatarId").AsGuid().NotNullable();
 
-            #endregion
-
+            Create.Table("RecipeSteps")
+                .WithColumn("Order").AsInt16().NotNullable()
+                .WithColumn("Description").AsString(1000).NotNullable()
+                .WithColumn("RecipeId").AsInt64().NotNullable()
+                .ForeignKey("FK_Recipes_RecipeSteps", "Recipes", "Id")
+                .OnDelete(Rule.Cascade)
+                .WithColumn("StepOperationId").AsInt64().NotNullable()
+                .ForeignKey("FK_StepOperations_RecipeStep", "StepOperations", "Id")
+                .OnDelete(Rule.None);
         }
 
         public override void Down()
         {
-            #region LoanInstallments
-
-            Delete.Table("LoanInstallments");
-
-            #endregion
-
-            #region Loans
-
-            Delete.Table("Loans");
-
-            #endregion
-
-            #region Managements
-
-            Delete.Table("Managements");
-
-            #endregion
-
-            #region RoutinePaymentDocuments
-
-            Delete.Table("RoutinePaymentDocuments");
-
-            #endregion
-
-            #region RoutinePayments
-
-            Delete.Table("RoutinePayments");
-
-            #endregion
+            Delete.Table("RecipeSteps");
+            Delete.Table("StepOperations");
+            Delete.Table("RecipeIngredient");
+            Delete.Table("RecipeDocuments");
+            Delete.Table("Recipes");
+            Delete.Table("RecipeCategories");
+            Delete.Table("Nationalities");
+            Delete.Table("Ingredients");
+            Delete.Table("IngredientUnits");
 
             #region ApplicationIdentities
 
