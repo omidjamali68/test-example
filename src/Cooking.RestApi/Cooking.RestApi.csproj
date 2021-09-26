@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Images\**" />
+    <Content Remove="Images\**" />
+    <EmbeddedResource Remove="Images\**" />
+    <None Remove="Images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
@@ -18,10 +25,6 @@
     <ProjectReference Include="..\Cooking.Infrastructure\Cooking.Infrastructure.csproj" />
     <ProjectReference Include="..\Cooking.Persistence.EF\Cooking.Persistence.EF.csproj" />
     <ProjectReference Include="..\Cooking.Services\Cooking.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <folder Include="Images\PaymentImages\" />
   </ItemGroup>
   
 </Project>
