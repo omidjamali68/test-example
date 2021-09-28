@@ -1,8 +1,10 @@
-using Cooking.Entities.CommonEntities;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Cooking.Services.Documents.Contracts
 {
-    public class CreateDocumentDto
+    public class DocumentDto
     {
         public byte[] Data { get; set; }
         public string Extension { get; set; }

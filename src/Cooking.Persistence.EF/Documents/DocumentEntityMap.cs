@@ -6,19 +6,17 @@ namespace Cooking.Persistence.EF.Documents
 {
     internal class DocumentEntityMap : IEntityTypeConfiguration<Document>
     {
-        public void Configure(EntityTypeBuilder<Document> builder)
+        public void Configure(EntityTypeBuilder<Document> _)
         {
-            builder.ToTable("Documents");
+            _.ToTable("Documents");
+            _.HasKey(_ => _.Id);
+            _.Property(_ => _.Id).ValueGeneratedNever();
 
-            builder.HasKey(_ => _.Id);
-            builder.Property(_ => _.Id).ValueGeneratedOnAdd();
-
-            builder.Property(_ => _.FileId)
-                .IsRequired();
-
-            builder.Property(_ => _.FileExtension)
-                .HasMaxLength(10)
-                .IsRequired();
+            _.Property(_ => _.Data).IsRequired();
+            _.Property(_ => _.FileName).HasMaxLength(50).IsRequired();
+            _.Property(_ => _.Extension).HasMaxLength(10).IsRequired();
+            _.Property(_ => _.Status).IsRequired();
+            _.Property(_ => _.CreationDate).IsRequired();
         }
     }
 }

@@ -17,6 +17,23 @@ namespace Cooking.Migrations
 
         public override void Up()
         {
+            #region States
+
+            Create.Table("Provinces")
+                .WithColumn("Id").AsInt32().PrimaryKey().NotNullable()
+                .WithColumn("Title").AsString(50).NotNullable();
+
+            Create.Table("Cities")
+                .WithColumn("Id").AsInt32().PrimaryKey().NotNullable()
+                .WithColumn("Title").AsString(50).NotNullable()
+                .WithColumn("ProvinceId").AsInt32().NotNullable()
+                .ForeignKey("FK_Provinces_Cities", "Provinces", "Id").OnDelete(Rule.None);
+
+            Create.Table("Nationalities")
+                .WithColumn("Id").AsInt32().PrimaryKey().NotNullable().Identity()
+                .WithColumn("Name").AsString(100).NotNullable();
+
+            #endregion
 
             #region ApplicationIdentities
 
@@ -37,6 +54,8 @@ namespace Cooking.Migrations
 
             #endregion
 
+            #region Ingredients
+
             Create.Table("IngredientUnits")
                 .WithColumn("Id").AsInt32().PrimaryKey().NotNullable().Identity()
                 .WithColumn("Title").AsString(50).NotNullable();
@@ -49,9 +68,9 @@ namespace Cooking.Migrations
                 .ForeignKey("FK_IngredientUnits_Ingredients", "IngredientUnits", "Id")
                 .OnDelete(Rule.None);
 
-            Create.Table("Nationalities")
-                .WithColumn("Id").AsInt32().PrimaryKey().NotNullable().Identity()
-                .WithColumn("Name").AsString(100).NotNullable();
+            #endregion
+
+            #region Recipes
 
             Create.Table("RecipeCategories")
                 .WithColumn("Id").AsInt32().PrimaryKey().NotNullable().Identity()
@@ -97,19 +116,30 @@ namespace Cooking.Migrations
                 .WithColumn("StepOperationId").AsInt64().NotNullable()
                 .ForeignKey("FK_StepOperations_RecipeStep", "StepOperations", "Id")
                 .OnDelete(Rule.None);
+
+            #endregion
         }
 
         public override void Down()
         {
+
+            #region Recipes
+
             Delete.Table("RecipeSteps");
             Delete.Table("StepOperations");
             Delete.Table("RecipeIngredient");
             Delete.Table("RecipeDocuments");
             Delete.Table("Recipes");
             Delete.Table("RecipeCategories");
-            Delete.Table("Nationalities");
+
+            #endregion
+
+            #region MyRegion
+
             Delete.Table("Ingredients");
             Delete.Table("IngredientUnits");
+
+            #endregion
 
             #region ApplicationIdentities
 
@@ -123,6 +153,13 @@ namespace Cooking.Migrations
 
             #endregion
 
+            #region States
+
+            Delete.Table("Nationalities");
+            Delete.Table("Cities");
+            Delete.Table("Provinces");
+
+            #endregion
         }
     }
 }

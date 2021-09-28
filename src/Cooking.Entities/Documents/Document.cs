@@ -5,17 +5,17 @@ namespace Cooking.Entities.Documents
 {
     public class Document
     {
-        public long Id { get; set; }
-        public Guid FileId { get; set; }
-        public string FileExtension { get; set; }
-        public DocumentStatus Status { get; set; }
+        public Guid Id { get; set; }
+        public byte[] Data { get; set; }
         public DateTime CreationDate { get; set; }
+        public string FileName { get; set; }
+        public string Extension { get; set; }
+        public DocumentStatus Status { get; set; }
     }
 
-    public enum DocumentStatus : byte
+    public enum DocumentStatus : short
     {
-        Registered = 1,
-        Reserved = 2,
-        Deleted = 3
+        Reserve = 1,
+        Register = 2
     }
 }

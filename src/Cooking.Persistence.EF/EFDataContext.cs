@@ -2,6 +2,8 @@
 using Cooking.Entities;
 using Cooking.Entities.ApplicationIdentities;
 using Cooking.Entities.Documents;
+using Cooking.Entities.Ingredients;
+using Cooking.Entities.Recipe;
 using Cooking.Entities.States;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -39,17 +41,6 @@ namespace Cooking.Persistence.EF
         //public DbSet<UserTimeZone> UserTimeZones { get; set; }
 
         #endregion
-
-        public DbSet<Ingredient> Ingredients { get; set; }
-        public DbSet<IngredientUnit> IngredientUnits { get; set; }
-        public DbSet<Nationality> Nationalities { get; set; }
-        public DbSet<Recipe> Recipes { get; set; }
-        public DbSet<RecipeCategory> RecipeCategories { get; set; }
-        public DbSet<RecipeDocument> RecipeDocuments { get; set; }
-        public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
-        public DbSet<RecipeStep> RecipeSteps { get; set; }
-        public DbSet<StepOperation> StepOperations { get; set; }
-        
         
         public override ChangeTracker ChangeTracker
         {
@@ -79,9 +70,27 @@ namespace Cooking.Persistence.EF
 
         public DbSet<City> Cities { get; set; }
         public DbSet<Province> Provinces { get; set; }
+        public DbSet<Nationality> Nationalities { get; set; }
 
         #endregion
 
+        #region Ingredients
 
+        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<IngredientUnit> IngredientUnits { get; set; }
+
+        #endregion
+
+        #region Recepies
+
+        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<RecipeCategory> RecipeCategories { get; set; }
+        public DbSet<RecipeDocument> RecipeDocuments { get; set; }
+        public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
+        public DbSet<RecipeStep> RecipeSteps { get; set; }
+        public DbSet<StepOperation> StepOperations { get; set; }
+
+        #endregion
+        
     }
 }

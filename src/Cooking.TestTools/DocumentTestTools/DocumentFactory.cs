@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cooking.Entities.Documents;
 using Cooking.Infrastructure.Test;
 using Cooking.Persistence.EF;
@@ -9,11 +10,21 @@ namespace Cooking.TestTools.DocumentTestTools
     {
         public static Document CreateDocument(EFDataContext context, DocumentStatus status)
         {
-            var document = new DocumentBuilder().Build();
-            document.Status = status;
-            context.Manipulate(_ => _.Documents.Add(document));
+            var fileId = Guid.NewGuid();
+            var document = new Document
+            {
+                Id = fileId,
+                CreationDate = DateTime.Now,
+                Data = new byte[100],
+                Extension = "pdf",
+                FileName = "Pic",
+                Status = status
+            };
+
+            context.Manipulate(_ => _.Set<Document>().Add(document));
             return document;
         }
+
 
     }
 }

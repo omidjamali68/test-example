@@ -16,71 +16,64 @@ namespace Cooking.Persistence.EF.Documents
         public EFDocumentRepository(EFDataContext context)
         {
             _context = context;
-            _documents = context.Documents;
+            _documents = context.Set<Document>();
         }
 
-        public void AddDocument(Document document, byte[] fileStream, string fileExtension)
+        public void AddDocument(Document document)
         {
-            var fileId = Guid.NewGuid();
-            var resolvedFileExtension = fileExtension.TrimStart('.');
-            var filename = fileId.ToString("N") + "." + resolvedFileExtension;
-
-            document.FileId = fileId;
-            document.FileExtension = resolvedFileExtension;
             _documents.Add(document);
         }
 
-        public async Task RegisterDocument(long documentId)
+        public async Task RegisterDocument(Guid documentId)
         {
             var document = await _documents.FirstOrDefaultAsync(_ => _.Id == documentId);
-            document.Status = DocumentStatus.Registered;
+            document.Status = DocumentStatus.Register;
         }
 
-        public async Task RegisterDocuments(List<long> documentIds)
+        public async Task RegisterDocuments(List<Guid> documentIds)
         {
             var documents = await _documents.Where(_ => documentIds.Any(d => d == _.Id)).ToListAsync();
-            documents.ForEach(_ => _.Status = DocumentStatus.Registered);
+            documents.ForEach(_ => _.Status = DocumentStatus.Register);
         }
 
-        public async Task RemoveDocument(long documentId)
+        public async Task<DocumentDto?> GetDocumentById(Guid id)
         {
-            var document = await _documents.FindAsync(documentId);
-            document.Status = DocumentStatus.Deleted;
+            return await _documents.Where(_ => _.Id == id)
+                                   .Select(document => new DocumentDto
+                                   {
+                                       Extension = document.Extension,
+                                       Data = document.Data
+                                   })
+                                   .SingleOrDefaultAsync();
         }
 
-        public async Task RemoveDocuments(List<long> documentsId)
+        public async Task<Document> FindById(Guid id)
         {
-            var documents = await _documents.Where(_ => documentsId.Any(d => d == _.Id)).ToListAsync();
-            documents.ForEach(_ => _.Status = DocumentStatus.Deleted);
+            return await _context.Set<Document>().FindAsync(id);
         }
 
-        public async Task<bool> IsDocumentExist(long documentId)
+        public async Task DeleteByIds(IList<Guid> documentIds)
         {
-            return await _documents.AnyAsync(_ => _.Id == documentId);
-        }
+            var documents = _documents.Where(_ => documentIds.Contains(_.Id))?.ToList();
 
-        public async Task<IList<Document>> FindByIds(IEnumerable<long> ids)
-        {
-            return await _documents.Where(_ => ids.Contains(_.Id)).ToListAsync();
-        }
+            if (documents != null)
+                _documents.RemoveRange(documents);
 
-        public async Task<DocumentFileDto> GetDocumentFileById(long id)
-        {
-            var documentFile = from document in _documents.Where(_ => _.Id == id)
-                select new DocumentFileDto
-                {
-                    FileExtension = document.FileExtension
-                };
+            //var raw = string.Empty;
+            //var ids = string.Empty;
 
-            return await documentFile.SingleOrDefaultAsync();
-        }
+            //foreach (var id in documentIds)
+            //{
+            //    ids += $"N'{id}',";
+            //}
+            //ids = ids.TrimEnd(',');
 
-        public async Task<string> GetExtension(long id)
-        {
-            var document = await _documents.Where(_ => _.Id == id)
-                .Select(_ => new {_.FileExtension}).SingleAsync();
+            //raw += $"DELETE FROM Documents WHERE Id IN({ids})";
 
-            return document.FileExtension;
+            //if (!string.IsNullOrEmpty(raw))
+            //{
+            //    await _context.Database.ExecuteSqlRawAsync(raw);
+            //}
         }
     }
 }
