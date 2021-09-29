@@ -94,11 +94,12 @@ namespace Cooking.Migrations
                 .WithColumn("DocumentId").AsGuid().NotNullable()
                 .WithColumn("Extension").AsString(10).NotNullable();
 
-            Create.Table("RecipeIngredient")
-                .WithColumn("RecipeId").AsInt64().NotNullable()
+            Create.Table("RecipeIngredients")
+                .WithColumn("Quantity").AsDouble().NotNullable()
+                .WithColumn("RecipeId").AsInt64().PrimaryKey().NotNullable()
                 .ForeignKey("FK_Recipes_RecipeIngredients", "Recipes", "Id")
                 .OnDelete(Rule.Cascade)
-                .WithColumn("IngredientId").AsInt64().NotNullable()
+                .WithColumn("IngredientId").AsInt64().PrimaryKey().NotNullable()
                 .ForeignKey("FK_Ingredients_RecipeIngredients", "Ingredients", "Id")
                 .OnDelete(Rule.None);
 
@@ -134,7 +135,7 @@ namespace Cooking.Migrations
 
             #endregion
 
-            #region MyRegion
+            #region Ingredients
 
             Delete.Table("Ingredients");
             Delete.Table("IngredientUnits");

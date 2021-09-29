@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Cooking.Entities.Recipe
+namespace Cooking.Entities.Recipes
 {
     public class RecipeCategory
     {

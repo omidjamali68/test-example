@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
-    <PackageReference Include="Stimulsoft.Reports.Engine.NetCore.Cracked" Version="2019.4.2" />
+    <!--<PackageReference Include="Stimulsoft.Reports.Engine.NetCore.Cracked" Version="2019.4.2" />-->
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
     <PackageReference Include="MimeMapping" Version="1.0.1.37" />

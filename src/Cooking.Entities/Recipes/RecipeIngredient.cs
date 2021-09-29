@@ -1,6 +1,6 @@
 ﻿using Cooking.Entities.Ingredients;
 
-namespace Cooking.Entities.Recipe
+namespace Cooking.Entities.Recipes
 {
     public class RecipeIngredient
     {

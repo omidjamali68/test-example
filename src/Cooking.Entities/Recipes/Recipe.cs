@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cooking.Entities.States;
 
-namespace Cooking.Entities.Recipe
+namespace Cooking.Entities.Recipes
 {
     public class Recipe
     {

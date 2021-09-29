@@ -3,7 +3,7 @@ using Cooking.Entities;
 using Cooking.Entities.ApplicationIdentities;
 using Cooking.Entities.Documents;
 using Cooking.Entities.Ingredients;
-using Cooking.Entities.Recipe;
+using Cooking.Entities.Recipes;
 using Cooking.Entities.States;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

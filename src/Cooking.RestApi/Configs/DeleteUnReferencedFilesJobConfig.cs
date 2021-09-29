@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cooking.Entities;
 using Cooking.Entities.Documents;
-using Cooking.Entities.Recipe;
+using Cooking.Entities.Recipes;
 using Cooking.Infrastructure;
 using Cooking.Persistence.EF;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

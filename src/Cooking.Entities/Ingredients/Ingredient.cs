@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cooking.Entities.Recipes;
+using System;
 using System.Collections.Generic;
 
 namespace Cooking.Entities.Ingredients

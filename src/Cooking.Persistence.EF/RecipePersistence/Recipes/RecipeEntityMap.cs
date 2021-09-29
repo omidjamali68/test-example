@@ -1,4 +1,4 @@
-﻿using Cooking.Entities.Recipe;
+﻿using Cooking.Entities.Recipes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Cooking.Entities.Recipes;
+using System.Collections.Generic;
 
 namespace Cooking.Entities.States
 {
