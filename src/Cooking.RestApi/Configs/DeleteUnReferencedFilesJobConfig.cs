@@ -99,16 +99,12 @@ namespace Cooking.RestApi.Configs
             var assembly = Assembly.GetAssembly(typeof(RecipeDocument));
 
             var typeWithDocuments = assembly?.GetTypes()
-                .Where(_ => _.GetProperties().Any(_ => _.Name == "ProfilePictureId" ||
-                                                       _.Name == "DocumentId" ||
-                                                       _.Name == "PaymentPictureId"))
+                .Where(_ => _.GetProperties().Any(_ => _.Name == "AvatarId" || _.Name == "DocumentId"))
                 .Select(_ => new DocumentTypeAndColumnDto
                 {
                     Type = _,
                     ColumnSpecifier = _.GetProperties()?
-                        .FirstOrDefault(_ => _.Name == "ProfilePictureId" ||
-                                                       _.Name == "DocumentId" ||
-                                                       _.Name == "PaymentPictureId")?.Name
+                        .FirstOrDefault(_ => _.Name == "AvatarId" || _.Name == "DocumentId")?.Name
                 }).ToList();
 
             return typeWithDocuments ?? new List<DocumentTypeAndColumnDto>();
