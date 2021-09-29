@@ -5,6 +5,8 @@ using Cooking.Infrastructure.Sms;
 using Cooking.Infrastructure.Sms.Contracts;
 using Cooking.Infrastructure.Web;
 using Cooking.Persistence.EF;
+using Cooking.Persistence.EF.ApplicationIdentity;
+using Cooking.Services.UserManagement;
 using Microsoft.Extensions.Configuration;
 
 namespace Cooking.RestApi.Configs
@@ -20,10 +22,10 @@ namespace Cooking.RestApi.Configs
 
         public override void ConfigureServiceContainer(ContainerBuilder container)
         {
-            //container.RegisterAssemblyTypes(typeof(RoutinePaymentAppService).Assembly)
-            //    .AssignableTo<Service>()
-            //    .AsImplementedInterfaces()
-            //    .InstancePerLifetimeScope();
+            container.RegisterAssemblyTypes(typeof(UserManagementAppService).Assembly)
+                 .AssignableTo<Service>()
+                 .AsImplementedInterfaces()
+                 .InstancePerLifetimeScope();
 
             container.RegisterType<UtcDateTimeService>()
                 .As<DateTimeService>()
@@ -54,10 +56,10 @@ namespace Cooking.RestApi.Configs
                 .AsSelf()
                 .InstancePerLifetimeScope();
 
-            //container.RegisterAssemblyTypes(typeof(EFRoutinePaymentRepository).Assembly)
-            //    .AssignableTo<Repository>()
-            //    .AsImplementedInterfaces()
-            //    .InstancePerLifetimeScope();
+            container.RegisterAssemblyTypes(typeof(EFApplicationUserRepository).Assembly)
+                  .AssignableTo<Repository>()
+                  .AsImplementedInterfaces()
+                  .InstancePerLifetimeScope();
         }
     }
 }
