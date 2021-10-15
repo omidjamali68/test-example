@@ -79,7 +79,7 @@ namespace Cooking.Migrations
             Create.Table("Recipes")
                 .WithColumn("Id").AsInt64().PrimaryKey().NotNullable().Identity()
                 .WithColumn("FoodName").AsString(100).NotNullable()
-                .WithColumn("Duration").AsInt16().NotNullable()
+                .WithColumn("Duration").AsInt16().Nullable()
                 .WithColumn("RecipeCategoryId").AsInt32().NotNullable()
                 .ForeignKey("FK_RecipeCategories_Recipes", "RecipeCategories", "Id")
                 .OnDelete(Rule.None)
