@@ -53,13 +53,13 @@ namespace Cooking.RestApi.Configs
 
     class DeleteUnReferencedFileJobService : BackgroundService
     {
-        private readonly DateTimeService _dateTimeService;
+        private readonly IDateTimeService _dateTimeService;
         private readonly DeleteUnReferencedFilesJobOptions _options;
         private readonly ILogger<DeleteUnReferencedFileJobService> _logger;
         private readonly IServiceProvider _serviceProvider;
 
         public DeleteUnReferencedFileJobService(
-            DateTimeService dateTimeService,
+            IDateTimeService dateTimeService,
             IOptions<DeleteUnReferencedFilesJobOptions> options,
             ILogger<DeleteUnReferencedFileJobService> logger,
             IServiceProvider serviceProvider)

@@ -16,7 +16,7 @@ namespace Cooking.TestTools.DocumentTestTools
                 Id = fileId,
                 CreationDate = DateTime.Now,
                 Data = new byte[100],
-                Extension = "pdf",
+                Extension = "jpg",
                 FileName = "Pic",
                 Status = status
             };

@@ -64,6 +64,7 @@ namespace Cooking.Migrations
                 .WithColumn("Id").AsInt64().PrimaryKey().NotNullable().Identity()
                 .WithColumn("Title").AsString(70).NotNullable()
                 .WithColumn("AvatarId").AsGuid().NotNullable()
+                .WithColumn("Extension").AsString(10).NotNullable()
                 .WithColumn("IngredientUnitId").AsInt32().NotNullable()
                 .ForeignKey("FK_IngredientUnits_Ingredients", "IngredientUnits", "Id")
                 .OnDelete(Rule.None);
@@ -123,7 +124,6 @@ namespace Cooking.Migrations
 
         public override void Down()
         {
-
             #region Recipes
 
             Delete.Table("RecipeSteps");

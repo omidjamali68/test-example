@@ -6,12 +6,12 @@ using Cooking.Services.StateServices.Provinces.Exceptions;
 
 namespace Cooking.Services.StateServices.Provinces
 {
-    public class ProvinceAppService : ProvinceService
+    public class ProvinceAppService : IProvinceService
     {
-        private readonly ProvinceRepository _repository;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IProvinceRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProvinceAppService(ProvinceRepository repository, UnitOfWork unitOfWork)
+        public ProvinceAppService(IProvinceRepository repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
@@ -28,7 +28,7 @@ namespace Cooking.Services.StateServices.Provinces
 
             _repository.Add(province);
 
-            _unitOfWork.Complete();
+            _unitOfWork.CompleteAsync();
         }
 
         public IList<GetAllProvincesDto> GetAll()

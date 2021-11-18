@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cooking.Persistence.EF.StatePersistence.Cities
 {
-    public class EFCityRepository : CityRepository
+    public class EFCityRepository : ICityRepository
     {
         private readonly EFDataContext _dataContext;
         private readonly DbSet<City> _set;

@@ -9,18 +9,19 @@ using Cooking.Services.Documents.Exceptions;
 
 namespace Cooking.Services.Documents
 {
-    public class DocumentAppService : DocumentService
+    public class DocumentAppService : IDocumentService
     {
-        private readonly DocumentRepository _repository;
-        private readonly DateTimeService _dateTime;
-        private readonly UnitOfWork _unitOfWork;
-        public DocumentAppService
-        (DocumentRepository repository,
-            UnitOfWork unitOfWork, DateTimeService dateTime)
+        private readonly IDocumentRepository _repository;
+        private readonly IDateTimeService _dateTime;
+        private readonly IUnitOfWork _unitOfWork;
+        public DocumentAppService(
+            IDocumentRepository repository,
+            IDateTimeService dateTime,
+            IUnitOfWork unitOfWork)
         {
             _repository = repository;
-            _unitOfWork = unitOfWork;
             _dateTime = dateTime;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<DocumentDto> GetDocumentsById(Guid id)
@@ -47,7 +48,7 @@ namespace Cooking.Services.Documents
 
             _repository.AddDocument(document);
 
-            await _unitOfWork.Complete();
+            await _unitOfWork.CompleteAsync();
 
             return document.Id;
         }
@@ -56,7 +57,7 @@ namespace Cooking.Services.Documents
         {
             await _repository.DeleteByIds(documentIds);
 
-            await _unitOfWork.Complete();
+            await _unitOfWork.CompleteAsync();
         }
     }
 }

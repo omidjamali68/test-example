@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cooking.Persistence.EF.Documents
 {
-    public class EFDocumentRepository : DocumentRepository
+    public class EFDocumentRepository : IDocumentRepository
     {
         private readonly EFDataContext _context;
         private readonly DbSet<Document> _documents;
@@ -54,26 +54,15 @@ namespace Cooking.Persistence.EF.Documents
 
         public async Task DeleteByIds(IList<Guid> documentIds)
         {
-            var documents = _documents.Where(_ => documentIds.Contains(_.Id))?.ToList();
+            var documents = await _documents.Where(_ => documentIds.Contains(_.Id))?.ToListAsync();
 
             if (documents != null)
                 _documents.RemoveRange(documents);
+        }
 
-            //var raw = string.Empty;
-            //var ids = string.Empty;
-
-            //foreach (var id in documentIds)
-            //{
-            //    ids += $"N'{id}',";
-            //}
-            //ids = ids.TrimEnd(',');
-
-            //raw += $"DELETE FROM Documents WHERE Id IN({ids})";
-
-            //if (!string.IsNullOrEmpty(raw))
-            //{
-            //    await _context.Database.ExecuteSqlRawAsync(raw);
-            //}
+        public async Task<IList<Document>> GetAllByIds(IList<Guid> ids)
+        {
+            return await _documents.Where(_ => ids.Contains(_.Id))?.ToListAsync();
         }
     }
 }

@@ -29,10 +29,10 @@ namespace Cooking.Services.Tests.Unit.Cities
 
         private readonly EFInMemoryDatabase database;
         private readonly EFDataContext dataContext;
-        private readonly CityRepository repository;
-        private readonly UnitOfWork unitOfWork;
-        private readonly CityService sut;
-        private readonly ProvinceService queryService;
+        private readonly ICityRepository repository;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly ICityService sut;
+        private readonly IProvinceService queryService;
 
         [Fact]
         private void FindById_finds_city_by_id_properly()

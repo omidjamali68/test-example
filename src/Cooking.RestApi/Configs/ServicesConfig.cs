@@ -23,12 +23,12 @@ namespace Cooking.RestApi.Configs
         public override void ConfigureServiceContainer(ContainerBuilder container)
         {
             container.RegisterAssemblyTypes(typeof(UserManagementAppService).Assembly)
-                 .AssignableTo<Service>()
+                 .AssignableTo<IService>()
                  .AsImplementedInterfaces()
                  .InstancePerLifetimeScope();
 
             container.RegisterType<UtcDateTimeService>()
-                .As<DateTimeService>()
+                .As<IDateTimeService>()
                 .SingleInstance();
 
             container.RegisterType<SMSIRMessageService>()
@@ -36,7 +36,7 @@ namespace Cooking.RestApi.Configs
                 .SingleInstance();
 
             container.RegisterType<MagickImagingService>()
-                .As<ImagingService>()
+                .As<IImagingService>()
                 .SingleInstance();
 
             container.RegisterType<UriSortParser>()
@@ -48,7 +48,7 @@ namespace Cooking.RestApi.Configs
                 .InstancePerLifetimeScope();
 
             container.RegisterType<EFUnitOfWork>()
-                .As<UnitOfWork>()
+                .As<IUnitOfWork>()
                 .InstancePerLifetimeScope();
 
             container.RegisterType<EFDataContext>()
@@ -57,7 +57,7 @@ namespace Cooking.RestApi.Configs
                 .InstancePerLifetimeScope();
 
             container.RegisterAssemblyTypes(typeof(EFApplicationUserRepository).Assembly)
-                  .AssignableTo<Repository>()
+                  .AssignableTo<IRepository>()
                   .AsImplementedInterfaces()
                   .InstancePerLifetimeScope();
         }

@@ -28,10 +28,10 @@ namespace Cooking.Services.Tests.Unit.Provinces
 
         private readonly EFInMemoryDatabase database;
         private readonly EFDataContext dataContext;
-        private readonly ProvinceRepository repository;
-        private readonly UnitOfWork unitOfWork;
-        private readonly ProvinceService sut;
-        private readonly ProvinceService queryService;
+        private readonly IProvinceRepository repository;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IProvinceService sut;
+        private readonly IProvinceService queryService;
 
         [Fact]
         private void GetAll_retrieves_all_provinces_properly()

@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cooking.Persistence.EF.ApplicationIdentity
 {
-    public class EFApplicationUserRepository : ApplicationUserRepository
+    public class EFApplicationUserRepository : IApplicationUserRepository
     {
         private const int HOURS_OF_DAY = 24;
         private readonly DbSet<ApplicationUser> _applicationUsers;
         private readonly EFDataContext _context;
-        private readonly DateTimeService _dateTime;
+        private readonly IDateTimeService _dateTime;
 
-        public EFApplicationUserRepository(EFDataContext context, DateTimeService dateTime)
+        public EFApplicationUserRepository(EFDataContext context, IDateTimeService dateTime)
         {
             _context = context;
             _dateTime = dateTime;

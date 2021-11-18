@@ -15,21 +15,21 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Cooking.Services.UserManagement
 {
-    public class UserManagementAppService : UserManagementService
+    public class UserManagementAppService : IUserManagementService
     {
         private const int MAX_VERIFICATION_CODE_SEND_PER_DAY = 6;
         private const int EXPIRE_VERIFICATIONCODE_TIME_MINUTE = 6;
-        private readonly DateTimeService _dateTime;
-        private readonly ApplicationUserRepository _repository;
+        private readonly IDateTimeService _dateTime;
+        private readonly IApplicationUserRepository _repository;
         private readonly IBaseSmsService _smsService;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public UserManagementAppService(UserManager<ApplicationUser> userManager,
-            DateTimeService dateTime,
+            IDateTimeService dateTime,
             IBaseSmsService smsService,
-            ApplicationUserRepository repository,
-            UnitOfWork unitOfWork
+            IApplicationUserRepository repository,
+            IUnitOfWork unitOfWork
         )
         {
             _userManager = userManager;
@@ -78,7 +78,7 @@ namespace Cooking.Services.UserManagement
 
             applicationUser = await _userManager.FindByNameAsync(dto.NationalCode);
 
-            await _unitOfWork.Complete();
+            await _unitOfWork.CompleteAsync();
 
             //Send Verification Code
             //var verificationCode = VerificationCode.Generate();
@@ -122,7 +122,7 @@ namespace Cooking.Services.UserManagement
                 applicationUser = await _userManager.FindByNameAsync(dto.NationalCode);
 
             await _repository.RemoveRegisterdUserVerificationCodes(applicationUser.NationalCode);
-            await _unitOfWork.Complete();
+            await _unitOfWork.CompleteAsync();
 
             return applicationUser.Id;
         }
@@ -237,7 +237,7 @@ namespace Cooking.Services.UserManagement
             if (applicationUser == null)
                 throw new UserNotFoundException();
 
-            await _unitOfWork.Complete();
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task<ApplicationUser> FindByUsername(string username)
@@ -292,7 +292,7 @@ namespace Cooking.Services.UserManagement
                 NationalCode = userNationalCode
             });
 
-            await _unitOfWork.Complete();
+            await _unitOfWork.CompleteAsync();
         }
 
         private string NormalizeCountryCallingCode(string countryCallingCode)

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cooking.Persistence.EF.StatePersistence.Provinces
 {
-    public class EFProvinceRepository : ProvinceRepository
+    public class EFProvinceRepository : IProvinceRepository
     {
         private readonly EFDataContext _dataContext;
         private readonly DbSet<Province> _provinces;

@@ -4,12 +4,12 @@ using Cooking.Services.StateServices.Cities.Contracts;
 
 namespace Cooking.Services.StateServices.Cities
 {
-    public class CityAppService : CityService
+    public class CityAppService : ICityService
     {
-        private readonly CityRepository _repository;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly ICityRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CityAppService(CityRepository repository, UnitOfWork unitOfWork)
+        public CityAppService(ICityRepository repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
@@ -25,7 +25,7 @@ namespace Cooking.Services.StateServices.Cities
 
             _repository.Add(city);
 
-            _unitOfWork.Complete();
+            _unitOfWork.CompleteAsync();
         }
 
         public FindCityByIdDto FindById(int id)

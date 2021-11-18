@@ -3,7 +3,7 @@ using Cooking.Infrastructure.Application;
 
 namespace Cooking.Persistence.EF
 {
-    public class EFUnitOfWork : UnitOfWork
+    public class EFUnitOfWork : IUnitOfWork
     {
         private readonly EFDataContext _dataContext;
 
@@ -12,23 +12,23 @@ namespace Cooking.Persistence.EF
             _dataContext = dataContext;
         }
 
-        public async Task Begin()
+        public async Task BeginAsync()
         {
             await _dataContext.Database.BeginTransactionAsync();
         }
 
-        public async Task Commit()
+        public async Task CommitAsync()
         {
             await _dataContext.SaveChangesAsync();
             _dataContext.Database.CommitTransaction();
         }
 
-        public async Task CommitPartial()
+        public async Task CommitPartialAsync()
         {
             await _dataContext.SaveChangesAsync();
         }
 
-        public async Task Complete()
+        public async Task CompleteAsync()
         {
             await _dataContext.SaveChangesAsync();
         }
