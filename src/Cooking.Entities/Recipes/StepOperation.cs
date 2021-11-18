@@ -16,5 +16,6 @@ namespace Cooking.Entities.Recipes
         public Guid AvatarId { get; set; }
         public string Extension { get; set; }
         public HashSet<RecipeStep> RecipeSteps { get; set; }
+        public HashSet<StepOperationDocument> StepOperationDocuments { get; set; }
     }
 }
