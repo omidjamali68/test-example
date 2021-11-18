@@ -109,6 +109,13 @@ namespace Cooking.Migrations
                 .WithColumn("Title").AsString(100).NotNullable()
                 .WithColumn("AvatarId").AsGuid().NotNullable();
 
+            Create.Table("StepOperationDocuments")
+                .WithColumn("StepOperationId").AsInt64().NotNullable()
+                .ForeignKey("FK_StepOperations_StepOperationDocuments", "StepOperations", "Id")
+                .OnDelete(Rule.Cascade)
+                .WithColumn("DocumentId").AsGuid().NotNullable()
+                .WithColumn("Extension").AsString(10).NotNullable();
+
             Create.Table("RecipeSteps")
                 .WithColumn("Order").AsInt16().NotNullable()
                 .WithColumn("Description").AsString(1000).NotNullable()
@@ -127,6 +134,7 @@ namespace Cooking.Migrations
             #region Recipes
 
             Delete.Table("RecipeSteps");
+            Delete.Table("StepOperationDocuments");
             Delete.Table("StepOperations");
             Delete.Table("RecipeIngredient");
             Delete.Table("RecipeDocuments");
