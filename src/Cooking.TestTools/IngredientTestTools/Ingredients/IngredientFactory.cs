@@ -2,8 +2,8 @@
 using Cooking.Persistence.EF.Documents;
 using Cooking.Persistence.EF.IngredientPersistence.Ingredients;
 using Cooking.Persistence.EF.IngredientPersistence.IngredientUnits;
-using Cooking.Services.Ingredients.Ingredients;
-using Cooking.Services.Ingredients.Ingredients.Contracts;
+using Cooking.Services.IngredientServices.Ingredients;
+using Cooking.Services.IngredientServices.Ingredients.Contracts;
 using System;
 
 namespace Cooking.TestTools.IngredientTestTools.Ingredients

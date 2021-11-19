@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cooking.Services.Ingredients.Ingredients.Contracts
+namespace Cooking.Services.IngredientServices.Ingredients.Contracts
 {
     public interface IIngredientRepository : IRepository
     {

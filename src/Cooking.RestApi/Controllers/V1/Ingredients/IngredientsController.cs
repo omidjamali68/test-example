@@ -1,4 +1,4 @@
-﻿using Cooking.Services.Ingredients.Ingredients.Contracts;
+﻿using Cooking.Services.IngredientServices.Ingredients.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

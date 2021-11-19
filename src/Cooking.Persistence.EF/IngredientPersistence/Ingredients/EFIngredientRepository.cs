@@ -1,5 +1,5 @@
 ﻿using Cooking.Entities.Ingredients;
-using Cooking.Services.Ingredients.Ingredients.Contracts;
+using Cooking.Services.IngredientServices.Ingredients.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

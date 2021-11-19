@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Cooking.Services.Ingredients.Ingredients.Contracts
+namespace Cooking.Services.IngredientServices.Ingredients.Contracts
 {
     public class AddIngredientDto
     {

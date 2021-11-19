@@ -1,7 +1,7 @@
 ﻿using Cooking.Entities.Documents;
 using Cooking.Entities.Ingredients;
 using Cooking.Persistence.EF;
-using Cooking.Services.Ingredients.Ingredients.Contracts;
+using Cooking.Services.IngredientServices.Ingredients.Contracts;
 using Cooking.Specs.Infrastructure;
 using Cooking.TestTools.DocumentTestTools;
 using Cooking.TestTools.IngredientTestTools.Ingredients;

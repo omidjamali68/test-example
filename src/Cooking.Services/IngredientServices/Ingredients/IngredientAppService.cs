@@ -2,7 +2,7 @@
 using Cooking.Infrastructure.Application;
 using Cooking.Services.Documents.Contracts;
 using Cooking.Services.Documents.Exceptions;
-using Cooking.Services.Ingredients.Ingredients.Contracts;
+using Cooking.Services.IngredientServices.Ingredients.Contracts;
 using Cooking.Services.Ingredients.IngredientUnits.Contracts;
 using Cooking.Services.Ingredients.IngredientUnits.Exceptions;
 using System;
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cooking.Services.Ingredients.Ingredients
+namespace Cooking.Services.IngredientServices.Ingredients
 {
     public class IngredientAppService : IIngredientService
     {
