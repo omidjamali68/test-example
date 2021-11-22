@@ -1,6 +1,7 @@
 ﻿using Cooking.Entities.Recipes;
 using Cooking.Infrastructure.Application;
 using Cooking.Services.RecipeServices.StepOperations.Contracts;
+using Cooking.Services.RecipeServices.StepOperations.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,5 +34,27 @@ namespace Cooking.Services.RecipeServices.StepOperations
             await _unitOfWork.CompleteAsync();
             return stepOperation.Id;
         }
+
+        public async Task UpdateAsync(UpdateStepOperationDto dto, long id)
+        {
+            var stepOperation = await _stepOperationRepository.FindById(id);
+            GuardAgainstStepOperationNotFound(stepOperation);
+
+            stepOperation.AvatarId = dto.AvatarId;
+            stepOperation.Extension = dto.Extension;
+            stepOperation.Title = dto.Title;
+
+            await _unitOfWork.CompleteAsync();
+        }
+
+        #region Guard Methods
+
+        private void GuardAgainstStepOperationNotFound(StepOperation stepOperation)
+        {
+            if (stepOperation == null)
+                throw new StepOperationNotFoundException();
+        }
+
+        #endregion
     }
 }

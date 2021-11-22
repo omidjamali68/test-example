@@ -38,5 +38,20 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.StepOperations
             expected.Title.Should().Be(dto.Title);
             expected.AvatarId.Should().Be(dto.AvatarId);
         }
+
+        [Fact]
+        private async Task Update_stepOperation_properly()
+        {
+            var avatar = DocumentFactory.CreateDocument(_context, Entities.Documents.DocumentStatus.Reserve);
+            var stepOperation = new StepOperationBuilder(avatar)
+                .WithTitle("تفت دادن")
+                .Build(_context);
+            var dto = StepOperationFactory.GenerateUpdateDto(avatar, "سرخ کردن");
+
+            await _sut.UpdateAsync(dto, stepOperation.Id);
+
+            var expected = _readContext.StepOperations.First(_ => _.Id == stepOperation.Id);
+            expected.Title.Should().Be(dto.Title);
+        }
     }
 }

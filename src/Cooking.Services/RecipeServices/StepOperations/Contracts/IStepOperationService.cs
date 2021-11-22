@@ -9,5 +9,6 @@ namespace Cooking.Services.RecipeServices.StepOperations.Contracts
     public interface IStepOperationService : IService
     {
         Task<long> AddAsync(AddStepOperationDto dto);
+        Task UpdateAsync(UpdateStepOperationDto dto, long id);
     }
 }

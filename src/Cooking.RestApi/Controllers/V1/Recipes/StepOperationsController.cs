@@ -22,5 +22,11 @@ namespace Cooking.RestApi.Controllers.V1.Recipes
         {
             return await _service.AddAsync(dto);
         }
+
+        [HttpPut("{id}")]
+        public async Task Update(long id, UpdateStepOperationDto dto)
+        {
+            await _service.UpdateAsync(dto, id);
+        }
     }
 }
