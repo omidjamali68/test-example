@@ -11,5 +11,6 @@ namespace Cooking.Services.RecipeServices.StepOperations.Contracts
     {
         Task AddAsync(StepOperation stepOperation);
         Task<StepOperation> FindById(long id);
+        Task<bool> IsTitleExist(string title, long id);
     }
 }

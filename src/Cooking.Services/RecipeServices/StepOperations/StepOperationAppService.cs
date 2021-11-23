@@ -39,6 +39,7 @@ namespace Cooking.Services.RecipeServices.StepOperations
         {
             var stepOperation = await _stepOperationRepository.FindById(id);
             GuardAgainstStepOperationNotFound(stepOperation);
+            await GuardAgainstStepOperationTitleExist(dto.Title, id);
 
             stepOperation.AvatarId = dto.AvatarId;
             stepOperation.Extension = dto.Extension;
@@ -55,6 +56,12 @@ namespace Cooking.Services.RecipeServices.StepOperations
                 throw new StepOperationNotFoundException();
         }
 
+        private async Task GuardAgainstStepOperationTitleExist(string title, long id)
+        {
+            var isTitleExist = await _stepOperationRepository.IsTitleExist(title, id);
+            if (isTitleExist)
+                throw new StepOperationTitleExistException();
+        }
         #endregion
     }
 }

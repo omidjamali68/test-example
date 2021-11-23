@@ -1,6 +1,7 @@
 ﻿using Cooking.Infrastructure.Test;
 using Cooking.Persistence.EF;
 using Cooking.Services.RecipeServices.StepOperations.Contracts;
+using Cooking.Services.RecipeServices.StepOperations.Exceptions;
 using Cooking.TestTools.DocumentTestTools;
 using Cooking.TestTools.RecipeTestTools.StepOperations;
 using FluentAssertions;
@@ -52,6 +53,25 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.StepOperations
 
             var expected = _readContext.StepOperations.First(_ => _.Id == stepOperation.Id);
             expected.Title.Should().Be(dto.Title);
+        }
+
+        [Fact]
+        private async Task Prevent_update_stepOperation_when_title_exist()
+        {
+            var avatar = DocumentFactory.CreateDocument(_context, Entities.Documents.DocumentStatus.Reserve);
+            var firstStepOperation = new StepOperationBuilder(avatar)
+                .WithTitle("تفت دادن")
+                .Build(_context);
+            var secondtStepOperation = new StepOperationBuilder(avatar)
+                .WithTitle("سرخ کردن")
+                .Build(_context);
+            var dto = StepOperationFactory.GenerateUpdateDto(avatar, "سرخ کردن");
+
+            Func<Task> expected = async ()=> await _sut.UpdateAsync(dto, firstStepOperation.Id);
+
+            await expected.Should().ThrowExactlyAsync<StepOperationTitleExistException>();
+            var dbExpected = _readContext.StepOperations.First(_ => _.Title == dto.Title);
+            dbExpected.Should().BeEquivalentTo(secondtStepOperation);
         }
     }
 }
