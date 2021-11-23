@@ -23,5 +23,10 @@ namespace Cooking.Persistence.EF.IngredientPersistence.Ingredients
         {
             await _ingredients.AddAsync(ingredient);
         }
+
+        public async Task<Ingredient> FindByIdAsync(long id)
+        {
+            return await _ingredients.FindAsync(id);
+        }
     }
 }

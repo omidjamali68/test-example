@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Cooking.Services.IngredientServices.Ingredients.Exceptions;
 
 namespace Cooking.Services.IngredientServices.Ingredients
 {
@@ -51,6 +52,28 @@ namespace Cooking.Services.IngredientServices.Ingredients
             return ingredient.Id;
         }
 
+        public async Task UpdateAsync(long id, UpdateIngredientDto dto)
+        {
+            var ingredient = await _repository.FindByIdAsync(id);
+            GuardAgainstIngredientNotFound(ingredient);
+
+            var ingredientUnit = await _ingredientUnitRepository.FindByIdAsync(dto.IngredientUnitId);
+            GuardAgainstIngredientUnitNotFound(ingredientUnit);
+
+            ingredient.Title = dto.Title;
+            ingredient.IngredientUnitId = dto.IngredientUnitId;
+
+            if (ingredient.AvatarId != dto.AvatarId)
+            {
+                await UpdateDocumentAsync(
+                    avatarId: dto.AvatarId,
+                    oldAvatarId: ingredient.AvatarId);
+                ingredient.AvatarId = dto.AvatarId;
+                ingredient.Extension = dto.Extension;
+            }
+            await _unitOfWork.CompleteAsync();
+        }
+
 
         #region Helper Methods
         private async Task InsertDocumentAsync(Guid avatarId)
@@ -58,17 +81,29 @@ namespace Cooking.Services.IngredientServices.Ingredients
             await GuardAgainstDocumentNotExist(avatarId);
             await _documentRepository.RegisterDocument(avatarId);
         }
+
+        private async Task UpdateDocumentAsync(Guid avatarId, Guid oldAvatarId)
+        {
+            await GuardAgainstDocumentNotExist(avatarId);
+            await _documentRepository.DeleteByIds(new List<Guid> { oldAvatarId });
+            await _documentRepository.RegisterDocument(avatarId);
+        }
         #endregion
 
         #region Guard Methods
         private void GuardAgainstIngredientUnitNotFound(IngredientUnit ingredientUnit)
         {
-           _ = ingredientUnit ?? throw new IngredientUnitNotFoundException();
+            _ = ingredientUnit ?? throw new IngredientUnitNotFoundException();
         }
 
         private async Task GuardAgainstDocumentNotExist(Guid avatarId)
         {
             _ = await _documentRepository.FindById(avatarId) ?? throw new DocumentNotFoundException();
+        }
+
+        private void GuardAgainstIngredientNotFound(Ingredient ingredient)
+        {
+            _ = ingredient ?? throw new IngredientNotFoundException();
         }
         #endregion
     }

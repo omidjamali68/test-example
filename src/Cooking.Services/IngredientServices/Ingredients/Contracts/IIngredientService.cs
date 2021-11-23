@@ -9,5 +9,6 @@ namespace Cooking.Services.IngredientServices.Ingredients.Contracts
     public interface IIngredientService : IService
     {
         Task<long> AddAsync(AddIngredientDto dto);
+        Task UpdateAsync(long id, UpdateIngredientDto dto);
     }
 }

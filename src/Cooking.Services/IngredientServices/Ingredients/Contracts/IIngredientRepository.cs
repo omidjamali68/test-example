@@ -10,5 +10,6 @@ namespace Cooking.Services.IngredientServices.Ingredients.Contracts
     public interface IIngredientRepository : IRepository
     {
         Task AddAsync(Ingredient ingredient);
+        Task<Ingredient> FindByIdAsync(long id);
     }
 }

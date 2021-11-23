@@ -50,5 +50,31 @@ namespace Cooking.Services.Tests.Unit.IngredientTests.Ingredients
             expected.AvatarId.Should().Be(dto.AvatarId);
             expected.Extension.Should().Be(dto.Extension);
         }
+
+        [Fact]
+        private async Task Update_update_ingredient_properly()
+        {
+            var ingredientUnit = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var ingredient = new IngredientBuilder(ingredientUnit.Id, document)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+            var doc = DocumentFactory.CreateDocument(_context, DocumentStatus.Reserve);
+            var dto = IngredientFactory.GenerateUpdateIngredientDto(
+                ingredientUnitId: ingredientUnit.Id,
+                title: "گوجه فرنگی",
+                avatarId: doc.Id);
+
+            await _sut.UpdateAsync(ingredient.Id, dto);
+
+            var expected = await _readContext.Ingredients
+               .SingleOrDefaultAsync(_ => _.Id == ingredient.Id);
+            expected.IngredientUnitId.Should().Be(dto.IngredientUnitId);
+            expected.Title.Should().Be(dto.Title);
+            expected.AvatarId.Should().Be(dto.AvatarId);
+            expected.Extension.Should().Be(dto.Extension);
+        }
     }
 }

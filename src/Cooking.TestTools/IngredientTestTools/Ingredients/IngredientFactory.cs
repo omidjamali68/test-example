@@ -36,6 +36,20 @@ namespace Cooking.TestTools.IngredientTestTools.Ingredients
                 AvatarId = avatarId,
                 Extension = "jpg"
             };
-        } 
+        }
+
+        public static UpdateIngredientDto GenerateUpdateIngredientDto(
+            int ingredientUnitId,
+            string title,
+            Guid avatarId)
+        {
+            return new UpdateIngredientDto
+            {
+                IngredientUnitId = ingredientUnitId,
+                Title = title,
+                AvatarId = avatarId,
+                Extension = "jpg"
+            };
+        }
     }
 }
