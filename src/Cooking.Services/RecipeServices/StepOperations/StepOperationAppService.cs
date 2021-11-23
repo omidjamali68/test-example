@@ -23,6 +23,7 @@ namespace Cooking.Services.RecipeServices.StepOperations
 
         public async Task<long> AddAsync(AddStepOperationDto dto)
         {
+            await GuardAgainstStepOperationTitleExist(dto.Title);
             StepOperation stepOperation = new StepOperation
             {
                 AvatarId = dto.AvatarId,
@@ -56,7 +57,7 @@ namespace Cooking.Services.RecipeServices.StepOperations
                 throw new StepOperationNotFoundException();
         }
 
-        private async Task GuardAgainstStepOperationTitleExist(string title, long id)
+        private async Task GuardAgainstStepOperationTitleExist(string title, long? id = null)
         {
             var isTitleExist = await _stepOperationRepository.IsTitleExist(title, id);
             if (isTitleExist)

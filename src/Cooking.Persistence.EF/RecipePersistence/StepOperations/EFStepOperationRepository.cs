@@ -28,7 +28,7 @@ namespace Cooking.Persistence.EF.RecipePersistence.StepOperations
             return await _stepOperations.FindAsync(id);
         }
 
-        public async Task<bool> IsTitleExist(string title, long id)
+        public async Task<bool> IsTitleExist(string title, long? id)
         {
             return await _stepOperations.AnyAsync(_ => _.Title.Replace(" ", "").Equals(title.Replace(" ", "")) &&
                 _.Id != id);
