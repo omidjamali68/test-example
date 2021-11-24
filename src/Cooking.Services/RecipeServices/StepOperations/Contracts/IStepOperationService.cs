@@ -10,5 +10,6 @@ namespace Cooking.Services.RecipeServices.StepOperations.Contracts
     {
         Task<long> AddAsync(AddStepOperationDto dto);
         Task UpdateAsync(UpdateStepOperationDto dto, long id);
+        Task Delete(long id);
     }
 }

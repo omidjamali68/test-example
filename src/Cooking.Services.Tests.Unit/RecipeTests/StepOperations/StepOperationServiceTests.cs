@@ -88,5 +88,18 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.StepOperations
             var dbExpected = _readContext.StepOperations.First(_ => _.Title == dto.Title);
             dbExpected.Should().BeEquivalentTo(secondtStepOperation);
         }
+
+        [Fact]
+        private async Task Delete_stepOperation_properly()
+        {
+            var stepOperation = new StepOperationBuilder(_avatar)
+               .WithTitle("تفت دادن")
+               .Build(_context);
+
+            await _sut.Delete(stepOperation.Id);
+
+            var expected = _readContext.StepOperations.Where(_ => _.Id == stepOperation.Id);
+            expected.Should().BeNullOrEmpty();
+        }
     }
 }

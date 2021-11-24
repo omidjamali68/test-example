@@ -36,6 +36,15 @@ namespace Cooking.Services.RecipeServices.StepOperations
             return stepOperation.Id;
         }
 
+        public async Task Delete(long id)
+        {
+            var stepOperation = await _stepOperationRepository.FindById(id);
+            GuardAgainstStepOperationNotFound(stepOperation);
+
+            _stepOperationRepository.Remove(stepOperation);
+            await _unitOfWork.CompleteAsync();
+        }
+
         public async Task UpdateAsync(UpdateStepOperationDto dto, long id)
         {
             var stepOperation = await _stepOperationRepository.FindById(id);

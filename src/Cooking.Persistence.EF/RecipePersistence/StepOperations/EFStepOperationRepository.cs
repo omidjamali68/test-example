@@ -33,5 +33,10 @@ namespace Cooking.Persistence.EF.RecipePersistence.StepOperations
             return await _stepOperations.AnyAsync(_ => _.Title.Replace(" ", "").Equals(title.Replace(" ", "")) &&
                 _.Id != id);
         }
+
+        public void Remove(StepOperation stepOperation)
+        {
+            _stepOperations.Remove(stepOperation);
+        }
     }
 }
