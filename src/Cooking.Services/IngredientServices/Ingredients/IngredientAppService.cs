@@ -37,6 +37,8 @@ namespace Cooking.Services.IngredientServices.Ingredients
             var ingredientUnit = await _ingredientUnitRepository.FindByIdAsync(dto.IngredientUnitId);
             GuardAgainstIngredientUnitNotFound(ingredientUnit);
 
+            await GuardAgainstIngredientTitleAndUnitExist(dto.Title, dto.IngredientUnitId);
+
             var ingredient = new Ingredient
             {
                 Title = dto.Title,
@@ -56,6 +58,7 @@ namespace Cooking.Services.IngredientServices.Ingredients
         {
             var ingredient = await _repository.FindByIdAsync(id);
             GuardAgainstIngredientNotFound(ingredient);
+            await GuardAgainstIngredientTitleAndUnitExist(dto.Title, dto.IngredientUnitId, id);
 
             var ingredientUnit = await _ingredientUnitRepository.FindByIdAsync(dto.IngredientUnitId);
             GuardAgainstIngredientUnitNotFound(ingredientUnit);
@@ -112,6 +115,15 @@ namespace Cooking.Services.IngredientServices.Ingredients
         private void GuardAgainstIngredientNotFound(Ingredient ingredient)
         {
             _ = ingredient ?? throw new IngredientNotFoundException();
+        }
+
+        private async Task GuardAgainstIngredientTitleAndUnitExist(
+            string title,
+            int ingredientUnitId,
+            long? id = null)
+        {
+            if (await _repository.IsTitleAndUnitExistAsync(title, ingredientUnitId, id))
+                throw new IngredientTitleAndUnitExistException();
         }
         #endregion
     }

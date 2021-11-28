@@ -27,6 +27,14 @@ namespace Cooking.Persistence.EF.IngredientPersistence.Ingredients
             return await _ingredients.FindAsync(id);
         }
 
+        public async Task<bool> IsTitleAndUnitExistAsync(string title, int ingredientUnitId, long? id)
+        {
+            return await _ingredients
+                .AnyAsync(_ => _.Title.Replace(" ", "").Equals(title.Replace(" ", "")) 
+                && _.IngredientUnitId == ingredientUnitId
+                && _.Id != id);
+        }
+
         public void Remove(Ingredient ingredient)
         {
             _ingredients.Remove(ingredient);
