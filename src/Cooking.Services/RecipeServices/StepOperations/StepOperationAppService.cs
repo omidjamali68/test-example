@@ -41,6 +41,8 @@ namespace Cooking.Services.RecipeServices.StepOperations
             var stepOperation = await _stepOperationRepository.FindById(id);
             GuardAgainstStepOperationNotFound(stepOperation);
 
+            await GuardAgainstStepOperationUsedInRecipe(stepOperation);
+
             _stepOperationRepository.Remove(stepOperation);
             await _unitOfWork.CompleteAsync();
         }
@@ -59,6 +61,13 @@ namespace Cooking.Services.RecipeServices.StepOperations
         }
 
         #region Guard Methods
+
+        private async Task GuardAgainstStepOperationUsedInRecipe(StepOperation stepOperation)
+        {
+            var isUsedInRecipe = await _stepOperationRepository.ExistInRecipe(stepOperation.Id);
+            if (isUsedInRecipe)
+                throw new StepOperationUseInRecipeException();
+        }
 
         private void GuardAgainstStepOperationNotFound(StepOperation stepOperation)
         {

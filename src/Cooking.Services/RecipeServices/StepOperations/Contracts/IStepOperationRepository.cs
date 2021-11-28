@@ -13,5 +13,6 @@ namespace Cooking.Services.RecipeServices.StepOperations.Contracts
         Task<StepOperation> FindById(long id);
         Task<bool> IsTitleExist(string title, long? id);
         void Remove(StepOperation stepOperation);
+        Task<bool> ExistInRecipe(long stepOperationId);
     }
 }

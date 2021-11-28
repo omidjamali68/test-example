@@ -23,6 +23,11 @@ namespace Cooking.Persistence.EF.RecipePersistence.StepOperations
             await _stepOperations.AddAsync(stepOperation);
         }
 
+        public async Task<bool> ExistInRecipe(long stepOperationId)
+        {
+            return await _context.RecipeSteps.AnyAsync(_ => _.StepOperationId == stepOperationId);
+        }
+
         public async Task<StepOperation> FindById(long id)
         {
             return await _stepOperations.FindAsync(id);

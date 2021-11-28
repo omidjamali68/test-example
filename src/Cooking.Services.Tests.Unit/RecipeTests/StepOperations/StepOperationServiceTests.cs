@@ -4,7 +4,12 @@ using Cooking.Persistence.EF;
 using Cooking.Services.RecipeServices.StepOperations.Contracts;
 using Cooking.Services.RecipeServices.StepOperations.Exceptions;
 using Cooking.TestTools.DocumentTestTools;
+using Cooking.TestTools.IngredientTestTools.Ingredients;
+using Cooking.TestTools.IngredientTestTools.IngredientUnits;
+using Cooking.TestTools.RecipeTestTools.RecipeCategories;
+using Cooking.TestTools.RecipeTestTools.Recipes;
 using Cooking.TestTools.RecipeTestTools.StepOperations;
+using Cooking.TestTools.StateTestTools;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -100,6 +105,34 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.StepOperations
 
             var expected = _readContext.StepOperations.Where(_ => _.Id == stepOperation.Id);
             expected.Should().BeNullOrEmpty();
+        }
+
+        [Fact]
+        private async Task Prevent_delete_stepOperation_when_use_in_recipe()
+        {
+            var stepOperation = new StepOperationBuilder(_avatar)
+               .WithTitle("تفت دادن")
+               .Build(_context);
+            var ingredientUnit = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var ingredient = new IngredientBuilder(ingredientUnit.Id, _avatar)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+            var recipeCategory = new RecipeCategoryBuilder()
+                .Build(_context);
+            var nationality = new NationalityBuilder()
+                .Build(_context);
+            var recipe = new RecipeBuilder(ingredient.Id, stepOperation.Id)
+                .WithNationality(nationality.Id)
+                .WithCategory(recipeCategory.Id)
+                .Build(_context);
+
+
+            Func<Task> expected = async ()=> await _sut.Delete(stepOperation.Id);
+            await expected.Should().ThrowExactlyAsync<StepOperationUseInRecipeException>();
+            var dbExpected = _readContext.StepOperations.Where(_ => _.Id == stepOperation.Id);
+            dbExpected.Should().HaveCount(1);
         }
     }
 }
