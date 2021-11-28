@@ -10,5 +10,6 @@ namespace Cooking.Services.IngredientServices.Ingredients.Contracts
     {
         Task<long> AddAsync(AddIngredientDto dto);
         Task UpdateAsync(long id, UpdateIngredientDto dto);
+        Task DeleteAsync(long id);
     }
 }

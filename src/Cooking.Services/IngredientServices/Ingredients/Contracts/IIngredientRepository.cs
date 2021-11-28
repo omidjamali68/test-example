@@ -11,5 +11,6 @@ namespace Cooking.Services.IngredientServices.Ingredients.Contracts
     {
         Task AddAsync(Ingredient ingredient);
         Task<Ingredient> FindByIdAsync(long id);
+        void Remove(Ingredient ingredient);
     }
 }

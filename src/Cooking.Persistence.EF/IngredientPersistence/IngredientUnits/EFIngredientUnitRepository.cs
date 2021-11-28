@@ -10,12 +10,10 @@ namespace Cooking.Persistence.EF.IngredientPersistence.IngredientUnits
 {
     public class EFIngredientUnitRepository : IIngredientUnitRepository
     {
-        private readonly EFDataContext _context;
         private readonly DbSet<IngredientUnit> _ingredientUnits;
         public EFIngredientUnitRepository(EFDataContext context)
         {
-            _context = context;
-            _ingredientUnits = _context.Set<IngredientUnit>();
+            _ingredientUnits = context.IngredientUnits;
         }
 
         public async Task<IngredientUnit> FindByIdAsync(int id)

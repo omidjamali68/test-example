@@ -76,5 +76,24 @@ namespace Cooking.Services.Tests.Unit.IngredientTests.Ingredients
             expected.AvatarId.Should().Be(dto.AvatarId);
             expected.Extension.Should().Be(dto.Extension);
         }
+
+        [Fact]
+        private async Task Delete_remove_ingredient_properly()
+        {
+            var ingredientUnit = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var ingredient = new IngredientBuilder(ingredientUnit.Id, document)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+
+            await _sut.DeleteAsync(ingredient.Id);
+
+            var expected = await _readContext.Ingredients
+               .Where(_ => _.Id == ingredient.Id)
+               .ToListAsync();
+            expected.Should().BeNullOrEmpty();
+        }
     }
 }

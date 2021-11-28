@@ -74,6 +74,14 @@ namespace Cooking.Services.IngredientServices.Ingredients
             await _unitOfWork.CompleteAsync();
         }
 
+        public async Task DeleteAsync(long id)
+        {
+            var ingredient = await _repository.FindByIdAsync(id);
+            GuardAgainstIngredientNotFound(ingredient);
+
+            _repository.Remove(ingredient);
+            await _unitOfWork.CompleteAsync();
+        }
 
         #region Helper Methods
         private async Task InsertDocumentAsync(Guid avatarId)

@@ -15,9 +15,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cooking.Specs.IngredientTests.Ingredients.Update
+namespace Cooking.Specs.IngredientTests.Ingredients.Delete
 {
-    [Scenario("ویرایش ماده اولیه غذا")]
+    [Scenario("حذف ماده اولیه غذا")]
     public class Successful : EFDataContextDatabaseFixture
     {
         private readonly IIngredientService _sut;
@@ -25,7 +25,6 @@ namespace Cooking.Specs.IngredientTests.Ingredients.Update
         private readonly EFDataContext _readContext;
         private IngredientUnit _ingredientUnit;
         private Ingredient _ingredient;
-        private UpdateIngredientDto _dto;
 
         public Successful(ConfigurationFixture configuration) : base(configuration)
         {
@@ -51,29 +50,19 @@ namespace Cooking.Specs.IngredientTests.Ingredients.Update
                 .Build(_context);
         }
 
-        [When("ماده اولیه با عنوان تخم مرغ با واحد تعداد را به" +
-            "ماده اولیه با عنوان گوجه فرنگی با واحد تعداد ویرایش می کنم")]
+        [When("ماده اولیه با عنوان تخم مرغ با واحد تعداد را حذف می کنم")]
         private async Task When()
         {
-            var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Reserve);
-            _dto = IngredientFactory.GenerateUpdateIngredientDto(
-                ingredientUnitId: _ingredientUnit.Id,
-                title: "گوجه فرنگی",
-                avatarId: document.Id);
-
-            await _sut.UpdateAsync(_ingredient.Id, _dto);
+            await _sut.DeleteAsync(_ingredient.Id);
         }
 
-        [Then("باید فقط یک ماده اولیه با عنوان گوجه فرنگی با واحد تعداد در فهرست مواد اولیه وجود داشته باشد")]
+        [Then("نباید هیچ ماده اولیه ای در فهرست مواد اولیه وجود داشته باشد")]
         private async Task Then()
         {
             var expected = await _readContext.Ingredients
-                .SingleOrDefaultAsync(_ => _.Id == _ingredient.Id);
-
-            expected.IngredientUnitId.Should().Be(_dto.IngredientUnitId);
-            expected.Title.Should().Be(_dto.Title);
-            expected.AvatarId.Should().Be(_dto.AvatarId);
-            expected.Extension.Should().Be(_dto.Extension);
+                .Where(_ => _.Id == _ingredient.Id)
+                .ToListAsync();
+            expected.Should().BeNullOrEmpty();
         }
 
         [Fact]
