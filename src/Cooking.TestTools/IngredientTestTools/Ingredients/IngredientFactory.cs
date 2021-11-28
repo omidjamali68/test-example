@@ -2,6 +2,7 @@
 using Cooking.Persistence.EF.Documents;
 using Cooking.Persistence.EF.IngredientPersistence.Ingredients;
 using Cooking.Persistence.EF.IngredientPersistence.IngredientUnits;
+using Cooking.Persistence.EF.RecipePersistence.RecipeIngredients;
 using Cooking.Services.IngredientServices.Ingredients;
 using Cooking.Services.IngredientServices.Ingredients.Contracts;
 using System;
@@ -14,12 +15,14 @@ namespace Cooking.TestTools.IngredientTestTools.Ingredients
         {
             var repository = new EFIngredientRepository(context);
             var ingredientUnitRepository = new EFIngredientUnitRepository(context);
+            var recipeIngredientRepository = new EFRecipeIngredientRepository(context);
             var documentRepository = new EFDocumentRepository(context);
             var unitOfWork = new EFUnitOfWork(context);
 
             return new IngredientAppService(
                 repository,
                 ingredientUnitRepository,
+                recipeIngredientRepository,
                 documentRepository,
                 unitOfWork);
         }

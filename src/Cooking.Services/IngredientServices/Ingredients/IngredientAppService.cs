@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Cooking.Services.IngredientServices.Ingredients.Exceptions;
+using Cooking.Services.RecipeServices.RecipeIngredients.Contracts;
 
 namespace Cooking.Services.IngredientServices.Ingredients
 {
@@ -17,17 +18,20 @@ namespace Cooking.Services.IngredientServices.Ingredients
     {
         private readonly IIngredientRepository _repository;
         private readonly IIngredientUnitRepository _ingredientUnitRepository;
+        private readonly IRecipeIngredientRepository _recipeIngredientRepository;
         private readonly IDocumentRepository _documentRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public IngredientAppService(
             IIngredientRepository repository,
             IIngredientUnitRepository ingredientUnitRepository,
+            IRecipeIngredientRepository recipeIngredientRepository,
             IDocumentRepository documentRepository,
             IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _ingredientUnitRepository = ingredientUnitRepository;
+            _recipeIngredientRepository = recipeIngredientRepository;
             _documentRepository = documentRepository;
             _unitOfWork = unitOfWork;
         }
@@ -82,9 +86,12 @@ namespace Cooking.Services.IngredientServices.Ingredients
             var ingredient = await _repository.FindByIdAsync(id);
             GuardAgainstIngredientNotFound(ingredient);
 
+            await GuardAgainstIngredientUsedInRecipe(ingredient.Id);
+
             _repository.Remove(ingredient);
             await _unitOfWork.CompleteAsync();
         }
+
 
         #region Helper Methods
         private async Task InsertDocumentAsync(Guid avatarId)
@@ -124,6 +131,12 @@ namespace Cooking.Services.IngredientServices.Ingredients
         {
             if (await _repository.IsTitleAndUnitExistAsync(title, ingredientUnitId, id))
                 throw new IngredientTitleAndUnitExistException();
+        }
+
+        private async Task GuardAgainstIngredientUsedInRecipe(long id)
+        {
+            if (await _recipeIngredientRepository.FindByIngredientIdAsync(id) != null)
+                throw new IngredientUsedInRecipeException();
         }
         #endregion
     }

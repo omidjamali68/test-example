@@ -6,6 +6,10 @@ using Cooking.Services.IngredientServices.Ingredients.Exceptions;
 using Cooking.TestTools.DocumentTestTools;
 using Cooking.TestTools.IngredientTestTools.Ingredients;
 using Cooking.TestTools.IngredientTestTools.IngredientUnits;
+using Cooking.TestTools.RecipeTestTools.RecipeCategories;
+using Cooking.TestTools.RecipeTestTools.Recipes;
+using Cooking.TestTools.RecipeTestTools.StepOperations;
+using Cooking.TestTools.StateTestTools;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -145,6 +149,38 @@ namespace Cooking.Services.Tests.Unit.IngredientTests.Ingredients
                .Where(_ => _.Id == ingredient.Id)
                .ToListAsync();
             expected.Should().BeNullOrEmpty();
+        }
+
+        [Fact]
+        private async Task Delete_fail_when_ingredient_used_in_recipe()
+        {
+            var ingredientUnit = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var ingredient = new IngredientBuilder(ingredientUnit.Id, document)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+            var recipeCategory = new RecipeCategoryBuilder()
+                .Build(_context);
+            var nationality = new NationalityBuilder()
+                .Build(_context);
+            var avatar = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var stepOperation = new StepOperationBuilder(avatar)
+                .WithTitle("سرخ کردن")
+                .Build(_context);
+            new RecipeBuilder(ingredient.Id, stepOperation.Id)
+                .WithNationality(nationality.Id)
+                .WithCategory(recipeCategory.Id)
+                .Build(_context);
+
+            Func<Task> expected = async () => await _sut.DeleteAsync(ingredient.Id);
+
+            await expected.Should().ThrowExactlyAsync<IngredientUsedInRecipeException>();
+            var dbExpected = _readContext.Ingredients
+                .Where(_ => _.Title.Equals(ingredient.Title) &&
+                _.IngredientUnitId == ingredient.IngredientUnitId);
+            dbExpected.Should().HaveCount(1);
         }
     }
 }
