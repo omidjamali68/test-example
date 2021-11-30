@@ -134,5 +134,34 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.StepOperations
             var dbExpected = _readContext.StepOperations.Where(_ => _.Id == stepOperation.Id);
             dbExpected.Should().HaveCount(1);
         }
+
+        [Fact]
+        private async Task Get_stepOperation_Properly()
+        {
+            var stepOperation = new StepOperationBuilder(_avatar)
+               .WithTitle("تفت دادن")
+               .Build(_context);
+
+            var expected = await _sut.GetStepOperation(stepOperation.Id);
+
+            expected.Title.Should().Be(stepOperation.Title);
+        }
+
+        [Fact]
+        private async Task Get_all_stepOperation_properly()
+        {
+            var firstStepOperation = new StepOperationBuilder(_avatar)
+               .WithTitle("تفت دادن")
+               .Build(_context);
+            var secondStepOperation = new StepOperationBuilder(_avatar)
+               .WithTitle("سرخ کردن")
+               .Build(_context);
+            var searchText = "تفت";
+
+            var expected = await _sut.GetAllStepOperation(searchText, null, null);
+
+            expected.TotalElements.Should().Be(1);
+            expected.Elements.Should().Contain(_ => _.Title == firstStepOperation.Title);
+        }
     }
 }

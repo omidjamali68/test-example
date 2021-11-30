@@ -1,7 +1,4 @@
 ﻿using Cooking.Infrastructure.Application;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Cooking.Services.RecipeServices.StepOperations.Contracts
@@ -11,5 +8,11 @@ namespace Cooking.Services.RecipeServices.StepOperations.Contracts
         Task<long> AddAsync(AddStepOperationDto dto);
         Task UpdateAsync(UpdateStepOperationDto dto, long id);
         Task Delete(long id);
+        Task<GetStepOperationDto> GetStepOperation(long id);
+        Task<PageResult<GetAllStepOperationDto>> GetAllStepOperation(
+            string searchText,
+            Pagination? pagination,
+            Sort<GetAllStepOperationDto>? sortExpression
+            );
     }
 }

@@ -1,8 +1,5 @@
 ﻿using Cooking.Entities.Recipes;
 using Cooking.Infrastructure.Application;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Cooking.Services.RecipeServices.StepOperations.Contracts
@@ -14,5 +11,10 @@ namespace Cooking.Services.RecipeServices.StepOperations.Contracts
         Task<bool> IsTitleExist(string title, long? id);
         void Remove(StepOperation stepOperation);
         Task<bool> ExistInRecipe(long stepOperationId);
+        Task<PageResult<GetAllStepOperationDto>> GetAll(
+            string searchText,
+            Pagination? pagination,
+            Sort<GetAllStepOperationDto>? sortExpression
+            );
     }
 }

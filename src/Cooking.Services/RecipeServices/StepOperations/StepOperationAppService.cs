@@ -60,6 +60,19 @@ namespace Cooking.Services.RecipeServices.StepOperations
             await _unitOfWork.CompleteAsync();
         }
 
+        public async Task<GetStepOperationDto> GetStepOperation(long id)
+        {
+            var stepOperation = await _stepOperationRepository.FindById(id);
+            GuardAgainstStepOperationNotFound(stepOperation);
+
+            return new GetStepOperationDto
+            {
+                AvatarId = stepOperation.AvatarId,
+                Extension = stepOperation.Extension,
+                Title = stepOperation.Title
+            };
+        }
+
         #region Guard Methods
 
         private async Task GuardAgainstStepOperationUsedInRecipe(StepOperation stepOperation)
@@ -81,6 +94,15 @@ namespace Cooking.Services.RecipeServices.StepOperations
             if (isTitleExist)
                 throw new StepOperationTitleExistException();
         }
+
+        public async Task<PageResult<GetAllStepOperationDto>> GetAllStepOperation(
+            string searchText,
+            Pagination? pagination,
+            Sort<GetAllStepOperationDto>? sortExpression)
+        {
+            return await _stepOperationRepository.GetAll(searchText, pagination, sortExpression);
+        }
+
         #endregion
     }
 }
