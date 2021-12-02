@@ -92,6 +92,11 @@ namespace Cooking.Services.IngredientServices.Ingredients
             await _unitOfWork.CompleteAsync();
         }
 
+        public async Task<GetIngredientDto> GetAsync(long id)
+        {
+            return await _repository.GetAsync(id);
+        }
+
 
         #region Helper Methods
         private async Task InsertDocumentAsync(Guid avatarId)

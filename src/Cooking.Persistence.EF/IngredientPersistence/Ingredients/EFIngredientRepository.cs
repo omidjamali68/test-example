@@ -3,6 +3,7 @@ using Cooking.Services.IngredientServices.Ingredients.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,18 @@ namespace Cooking.Persistence.EF.IngredientPersistence.Ingredients
         public async Task<Ingredient> FindByIdAsync(long id)
         {
             return await _ingredients.FindAsync(id);
+        }
+
+        public async Task<GetIngredientDto> GetAsync(long id)
+        {
+            return await _ingredients.Where(_ => _.Id == id)
+                .Select(_ => new GetIngredientDto
+                {
+                    IngredientUnitId = _.IngredientUnitId,
+                    Title = _.Title,
+                    AvatarId = _.AvatarId,
+                    Extension = _.Extension
+                }).SingleOrDefaultAsync();
         }
 
         public async Task<bool> IsTitleAndUnitExistAsync(string title, int ingredientUnitId, long? id)

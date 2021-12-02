@@ -182,5 +182,27 @@ namespace Cooking.Services.Tests.Unit.IngredientTests.Ingredients
                 _.IngredientUnitId == ingredient.IngredientUnitId);
             dbExpected.Should().HaveCount(1);
         }
+
+        [Fact]
+        private async Task Get_get_ingredient_properly()
+        {
+            var ingredientUnit = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var ingredient = new IngredientBuilder(ingredientUnit.Id, document)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+
+            var actual = await _sut.GetAsync(ingredient.Id);
+
+            var expected = await _readContext.Ingredients
+               .Where(_ => _.Id == ingredient.Id)
+               .SingleOrDefaultAsync();
+            expected.IngredientUnitId.Should().Be(actual.IngredientUnitId);
+            expected.Title.Should().Be(actual.Title);
+            expected.AvatarId.Should().Be(actual.AvatarId);
+            expected.Extension.Should().Be(actual.Extension);
+        }
     }
 }
