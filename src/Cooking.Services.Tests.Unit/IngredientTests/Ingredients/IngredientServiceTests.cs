@@ -204,5 +204,34 @@ namespace Cooking.Services.Tests.Unit.IngredientTests.Ingredients
             expected.AvatarId.Should().Be(actual.AvatarId);
             expected.Extension.Should().Be(actual.Extension);
         }
+
+        [Theory]
+        [InlineData("مرغ")]
+        private async Task Get_getAll_ingredient_properly(string searchText)
+        {
+            var ingredientUnit = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var ingredient = new IngredientBuilder(ingredientUnit.Id, document)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+
+            var actual = await _sut.GetAllAsync(
+                searchText: searchText,
+                pagination: null,
+                sortExpression: null);
+
+            var expected = await _readContext.Ingredients
+                .Include(_ => _.IngredientUnit)
+                .ToListAsync();
+            actual.TotalElements.Should().Be(expected.Count);
+            var ingredientActual = actual.Elements.First();
+            expected.First().Id.Should().Be(ingredientActual.Id);
+            expected.First().IngredientUnit.Title.Should().Be(ingredientActual.IngredientUnitTitle);
+            expected.First().Title.Should().Be(ingredientActual.Title);
+            expected.First().AvatarId.Should().Be(ingredientActual.AvatarId);
+            expected.First().Extension.Should().Be(ingredientActual.Extension);
+        }
     }
 }

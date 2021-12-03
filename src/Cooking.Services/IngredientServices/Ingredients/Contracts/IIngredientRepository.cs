@@ -13,6 +13,9 @@ namespace Cooking.Services.IngredientServices.Ingredients.Contracts
         Task<Ingredient> FindByIdAsync(long id);
         void Remove(Ingredient ingredient);
         Task<bool> IsTitleAndUnitExistAsync(string title, int ingredientUnitId, long? id);
-        Task<GetIngredientDto> GetAsync(long id);
+        Task<PageResult<GetAllIngredientDto>> GetAllAsync(
+            string searchText,
+            Pagination pagination,
+            Sort<GetAllIngredientDto> sortExpression);
     }
 }
