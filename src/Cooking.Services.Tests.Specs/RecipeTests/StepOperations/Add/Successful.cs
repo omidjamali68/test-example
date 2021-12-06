@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cooking.Specs.Recipes.StepOperations.Add
+namespace Cooking.Specs.RecipeTests.StepOperations.Add
 {
     [Scenario("تعریف مرحله پخت غذا به همراه تصویر آیکون")]
     public class Successful : EFDataContextDatabaseFixture

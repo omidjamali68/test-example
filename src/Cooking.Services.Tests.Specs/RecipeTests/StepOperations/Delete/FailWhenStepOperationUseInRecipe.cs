@@ -17,7 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cooking.Specs.Recipes.StepOperations.Delete
+namespace Cooking.Specs.RecipeTests.StepOperations.Delete
 {
     [Scenario("جلوگیری از حذف مرحله پخت غذا استفاده شده در دستور پخت غذا")]
     public class FailWhenStepOperationUseInRecipe : EFDataContextDatabaseFixture
