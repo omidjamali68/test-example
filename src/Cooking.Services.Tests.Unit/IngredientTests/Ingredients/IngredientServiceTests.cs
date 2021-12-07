@@ -169,9 +169,9 @@ namespace Cooking.Services.Tests.Unit.IngredientTests.Ingredients
             var stepOperation = new StepOperationBuilder(avatar)
                 .WithTitle("سرخ کردن")
                 .Build(_context);
-            new RecipeBuilder(ingredient.Id, stepOperation.Id)
-                .WithNationality(nationality.Id)
-                .WithCategory(recipeCategory.Id)
+            new RecipeBuilder(nationality.Id, recipeCategory.Id)
+                .WithIngredient(ingredient)
+                .WithStep(stepOperation)
                 .Build(_context);
 
             Func<Task> expected = async () => await _sut.DeleteAsync(ingredient.Id);
@@ -181,6 +181,57 @@ namespace Cooking.Services.Tests.Unit.IngredientTests.Ingredients
                 .Where(_ => _.Title.Equals(ingredient.Title) &&
                 _.IngredientUnitId == ingredient.IngredientUnitId);
             dbExpected.Should().HaveCount(1);
+        }
+
+        [Fact]
+        private async Task Get_get_ingredient_properly()
+        {
+            var ingredientUnit = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var ingredient = new IngredientBuilder(ingredientUnit.Id, document)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+
+            var actual = await _sut.GetAsync(ingredient.Id);
+
+            var expected = await _readContext.Ingredients
+               .Where(_ => _.Id == ingredient.Id)
+               .SingleOrDefaultAsync();
+            expected.IngredientUnitId.Should().Be(actual.IngredientUnitId);
+            expected.Title.Should().Be(actual.Title);
+            expected.AvatarId.Should().Be(actual.AvatarId);
+            expected.Extension.Should().Be(actual.Extension);
+        }
+
+        [Theory]
+        [InlineData("مرغ")]
+        private async Task Get_getAll_ingredient_properly(string searchText)
+        {
+            var ingredientUnit = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var ingredient = new IngredientBuilder(ingredientUnit.Id, document)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+
+            var actual = await _sut.GetAllAsync(
+                searchText: searchText,
+                pagination: null,
+                sortExpression: null);
+
+            var expected = await _readContext.Ingredients
+                .Include(_ => _.IngredientUnit)
+                .ToListAsync();
+            actual.TotalElements.Should().Be(expected.Count);
+            var ingredientActual = actual.Elements.First();
+            expected.First().Id.Should().Be(ingredientActual.Id);
+            expected.First().IngredientUnit.Title.Should().Be(ingredientActual.IngredientUnitTitle);
+            expected.First().Title.Should().Be(ingredientActual.Title);
+            expected.First().AvatarId.Should().Be(ingredientActual.AvatarId);
+            expected.First().Extension.Should().Be(ingredientActual.Extension);
         }
     }
 }

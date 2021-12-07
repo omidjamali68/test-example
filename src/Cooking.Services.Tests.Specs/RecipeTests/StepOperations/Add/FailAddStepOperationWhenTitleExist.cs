@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cooking.Specs.Recipes.StepOperations.Add
+namespace Cooking.Specs.RecipeTests.StepOperations.Add
 {
     [Scenario("جلوگیری از تعریف مرحله پخت غذا با عنوان تکراری")]
     public class FailAddStepOperationWhenTitleExist : EFDataContextDatabaseFixture

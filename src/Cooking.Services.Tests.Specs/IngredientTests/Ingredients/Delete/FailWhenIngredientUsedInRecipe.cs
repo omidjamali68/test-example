@@ -9,6 +9,7 @@ using Cooking.TestTools.DocumentTestTools;
 using Cooking.TestTools.IngredientTestTools.Ingredients;
 using Cooking.TestTools.IngredientTestTools.IngredientUnits;
 using Cooking.TestTools.RecipeTestTools.RecipeCategories;
+using Cooking.TestTools.RecipeTestTools.RecipeIngredients;
 using Cooking.TestTools.RecipeTestTools.Recipes;
 using Cooking.TestTools.RecipeTestTools.StepOperations;
 using Cooking.TestTools.StateTestTools;
@@ -67,9 +68,9 @@ namespace Cooking.Specs.IngredientTests.Ingredients.Delete
             var stepOperation = new StepOperationBuilder(avatar)
                 .WithTitle("سرخ کردن")
                 .Build(_context);
-            new RecipeBuilder(_ingredient.Id, stepOperation.Id)
-                .WithNationality(nationality.Id)
-                .WithCategory(recipeCategory.Id)
+            new RecipeBuilder(nationality.Id, recipeCategory.Id)
+                .WithIngredient(_ingredient)
+                .WithStep(stepOperation)
                 .Build(_context);
         }
 

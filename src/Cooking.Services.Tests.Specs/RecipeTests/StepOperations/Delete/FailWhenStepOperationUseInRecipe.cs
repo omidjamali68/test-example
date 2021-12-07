@@ -17,7 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cooking.Specs.Recipes.StepOperations.Delete
+namespace Cooking.Specs.RecipeTests.StepOperations.Delete
 {
     [Scenario("جلوگیری از حذف مرحله پخت غذا استفاده شده در دستور پخت غذا")]
     public class FailWhenStepOperationUseInRecipe : EFDataContextDatabaseFixture
@@ -60,9 +60,9 @@ namespace Cooking.Specs.Recipes.StepOperations.Delete
                 .Build(_context);
             var nationality = new NationalityBuilder()
                 .Build(_context);
-            _recipe = new RecipeBuilder(_ingredient.Id, _stepOperation.Id)
-                .WithNationality(nationality.Id)
-                .WithCategory(recipeCategory.Id)
+            _recipe = new RecipeBuilder(nationality.Id, recipeCategory.Id)
+                .WithIngredient(_ingredient)
+                .WithStep(_stepOperation)
                 .Build(_context);
         }
 

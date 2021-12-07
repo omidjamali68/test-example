@@ -123,9 +123,9 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.StepOperations
                 .Build(_context);
             var nationality = new NationalityBuilder()
                 .Build(_context);
-            var recipe = new RecipeBuilder(ingredient.Id, stepOperation.Id)
-                .WithNationality(nationality.Id)
-                .WithCategory(recipeCategory.Id)
+            var recipe = new RecipeBuilder(nationality.Id, recipeCategory.Id)
+                .WithIngredient(ingredient)
+                .WithStep(stepOperation)
                 .Build(_context);
 
 

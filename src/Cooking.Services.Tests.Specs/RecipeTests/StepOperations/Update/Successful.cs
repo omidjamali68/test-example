@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cooking.Specs.Recipes.StepOperations.Update
+namespace Cooking.Specs.RecipeTests.StepOperations.Update
 {
     [Scenario("ویرایش مرحله پخت غذا")]
     public class Successful : EFDataContextDatabaseFixture

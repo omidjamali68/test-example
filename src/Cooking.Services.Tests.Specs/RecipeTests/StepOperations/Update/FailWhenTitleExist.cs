@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cooking.Specs.Recipes.StepOperations.Update
+namespace Cooking.Specs.RecipeTests.StepOperations.Update
 {
     [Scenario("جلوگیری از ویرایش مرحله پخت غذا با عنوان تکراری")]
     public class FailWhenTitleExist : EFDataContextDatabaseFixture

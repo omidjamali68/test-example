@@ -92,6 +92,28 @@ namespace Cooking.Services.IngredientServices.Ingredients
             await _unitOfWork.CompleteAsync();
         }
 
+        public async Task<GetIngredientDto> GetAsync(long id)
+        {
+            var ingredient = await _repository.FindByIdAsync(id);
+            GuardAgainstIngredientNotFound(ingredient);
+
+            return new GetIngredientDto
+            {
+                IngredientUnitId = ingredient.IngredientUnitId,
+                Title = ingredient.Title,
+                AvatarId = ingredient.AvatarId,
+                Extension = ingredient.Extension
+            };
+        }
+
+        public async Task<PageResult<GetAllIngredientDto>> GetAllAsync(
+            string searchText,
+            Pagination pagination,
+            Sort<GetAllIngredientDto> sortExpression)
+        {
+            return await _repository.GetAllAsync(searchText, pagination, sortExpression);
+        }
+
 
         #region Helper Methods
         private async Task InsertDocumentAsync(Guid avatarId)

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cooking.Specs.Recipes.StepOperations.Delete
+namespace Cooking.Specs.RecipeTests.StepOperations.Delete
 {
     [Scenario("حذف مرحله پخت غذا")]
     public class Successful : EFDataContextDatabaseFixture
