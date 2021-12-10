@@ -1,4 +1,5 @@
 ﻿using Cooking.Entities.Recipes;
+using Cooking.Services.RecipeServices.RecipeSteps.Contracts;
 
 namespace Cooking.TestTools.RecipeTestTools.RecipeSteps
 {
@@ -10,6 +11,19 @@ namespace Cooking.TestTools.RecipeTestTools.RecipeSteps
             {
                 StepOperationId = stepOperationId,
                 Description = "dummy_desc"
+            };
+        }
+
+        public static RecipeStepDto GenerateDto(
+            long stepOperationId,
+            string description = "dummy_desc",
+            short order = 1
+        )
+        {
+            return new RecipeStepDto{
+                Description = description,
+                Order = order,
+                StepOperationId= stepOperationId
             };
         }
     }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Cooking.Persistence.EF.RecipePersistence.Recipes
 {
@@ -13,6 +14,11 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
         public EFRecipeRepository(EFDataContext context)
         {
             _recipes = context.Recipes;
+        }
+
+        public async Task Add(Recipe recipe)
+        {
+            await _recipes.AddAsync(recipe);
         }
     }
 }

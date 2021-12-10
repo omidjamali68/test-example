@@ -10,9 +10,7 @@ namespace Cooking.Persistence.EF.RecipePersistence.RecipeDocuments
         {
             builder.ToTable("RecipeDocuments");
 
-            builder.HasKey(_ => _.Id);
-            builder.Property(_ => _.Id)
-                .ValueGeneratedOnAdd();
+            builder.HasKey(_ => new { _.RecipeId, _.DocumentId });
 
             builder.Property(_ => _.Extension)
                 .IsRequired()

@@ -1,4 +1,6 @@
-﻿using Cooking.Entities.Recipes;
+﻿using System;
+using Cooking.Entities.Recipes;
+using Cooking.Services.RecipeServices.RecipeIngredients.Contracts;
 
 namespace Cooking.TestTools.RecipeTestTools.RecipeIngredients
 {
@@ -9,6 +11,15 @@ namespace Cooking.TestTools.RecipeTestTools.RecipeIngredients
             return new RecipeIngredient
             {
                 IngredientId = ingredientId
+            };
+        }
+
+        public static RecipeIngredientDto GenerateDto(long ingredientId, double quantity = 2)
+        {
+            return new RecipeIngredientDto
+            {
+                IngredientId = ingredientId,
+                Quantity = quantity
             };
         }
     }

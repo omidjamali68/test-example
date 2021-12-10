@@ -30,7 +30,13 @@ namespace Cooking.RestApi.Configs
 
         public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(value.ToUniversalTime());
+            var zonedDateValue = GetZonedDate(value);
+            writer.WriteStringValue(zonedDateValue.ToUniversalTime());
+        }
+
+        private DateTime GetZonedDate(DateTime value)
+        {
+            return value.Kind == DateTimeKind.Unspecified ? DateTime.SpecifyKind(value, DateTimeKind.Utc) : value;
         }
     }
 
