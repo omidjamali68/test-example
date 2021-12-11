@@ -7,5 +7,7 @@ namespace Cooking.Services.RecipeServices.Recipes.Contracts
     public interface IRecipeRepository : IRepository
     {
         Task Add(Recipe recipe);
+        void Remove(Recipe recipe);
+        Task<Recipe> FindByIdAsync(long id);
     }
 }

@@ -103,5 +103,38 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.Recipes
             expected.RecipeIngredients.Should()
                 .Contain(_ => _.IngredientId == dto.RecipeIngredients.First().IngredientId);
         }
+
+        [Fact]
+        private async Task Delete_remove_recipe_properly()
+        {
+            var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var ingredientUnit_first = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var ingredientUnit_second = new IngredientUnitBuilder()
+               .WithTitle("گرم")
+               .Build(_context);
+            var ingredientEgge = new IngredientBuilder(ingredientUnit_first.Id, document)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+            var ingredientOil = new IngredientBuilder(ingredientUnit_second.Id, document)
+                .WithTitle("روغن")
+                .Build(_context);
+            var stepOperation = new StepOperationBuilder(document)
+            .WithTitle("سرخ کردن")
+            .Build(_context);
+            var recipeCategory = new RecipeCategoryBuilder().Build(_context);
+            var nationality = new NationalityBuilder().Build(_context);
+            var recipe = new RecipeBuilder(nationality.Id, recipeCategory.Id)
+                .WithIngredient(ingredientEgge)
+                .WithIngredient(ingredientOil)
+                .WithStep(stepOperation)
+                .Build(_context);
+
+            await _sut.DeleteAsync(recipe.Id);
+
+            var excepted = await _readContext.Recipes.ToListAsync();
+            excepted.Should().BeNullOrEmpty();
+        }
     }
 }

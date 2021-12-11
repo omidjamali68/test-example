@@ -20,5 +20,15 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
         {
             await _recipes.AddAsync(recipe);
         }
+
+        public async Task<Recipe> FindByIdAsync(long id)
+        {
+            return await _recipes.FindAsync(id);
+        }
+
+        public void Remove(Recipe recipe)
+        {
+            _recipes.Remove(recipe);
+        }
     }
 }

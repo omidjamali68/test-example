@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Cooking.Entities.Recipes;
 using Cooking.Infrastructure.Application;
 using Cooking.Services.RecipeServices.Recipes.Contracts;
+using Cooking.Services.RecipeServices.Recipes.Exceptions;
 
 namespace Cooking.Services.RecipeServices.Recipes
 {
@@ -26,6 +27,15 @@ namespace Cooking.Services.RecipeServices.Recipes
             await _unitOfWork.CompleteAsync();
 
             return recipe.Id;
+        }
+
+        public async Task DeleteAsync(long id)
+        {
+            var recipe = await _repository.FindByIdAsync(id);
+            GuardAgainstRecipeNotFound(recipe);
+
+            _repository.Remove(recipe);
+            await _unitOfWork.CompleteAsync();
         }
 
         #region Helper Methods
@@ -58,6 +68,12 @@ namespace Cooking.Services.RecipeServices.Recipes
         }
 
         #endregion
-        
+
+        #region Guard Methods
+        public void GuardAgainstRecipeNotFound(Recipe recipe)
+        {
+            _ = recipe ?? throw new RecipeNotFoundException();
+        }
+        #endregion
     }
 }

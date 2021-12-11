@@ -23,5 +23,11 @@ namespace Cooking.RestApi.Controllers.V1.Recipes
         {
             return await _service.Add(dto);
         }
+
+        [HttpDelete("{id}")]
+        public async Task Delete(long id)
+        {
+            await _service.DeleteAsync(id);
+        }
     }
 }
