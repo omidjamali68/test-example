@@ -38,8 +38,41 @@ namespace Cooking.Services.RecipeServices.Recipes
             await _unitOfWork.CompleteAsync();
         }
 
+        public async Task Update(UpdateRecipeDto dto, long id)
+        {
+            var recipe = await _repository.FindByIdAsync(id);
+            GuardAgainstRecipeNotFound(recipe);
+            ExchangeEntityWithUpdateDto(dto, recipe);
+
+            await _unitOfWork.CompleteAsync();
+        }
+
         #region Helper Methods
 
+        private static void ExchangeEntityWithUpdateDto(UpdateRecipeDto dto, Recipe recipe)
+        {
+            recipe.Duration = dto.Duration;
+            recipe.FoodName = dto.FoodName;
+            recipe.NationalityId = dto.NationalityId;
+            recipe.RecipeCategoryId = dto.RecipeCategoryId;
+            recipe.RecipeDocuments = dto.RecipeDocuments.Select(_ => new RecipeDocument
+            {
+                DocumentId = _.DocumentId,
+                Extension = _.Extension,
+            }).ToHashSet();
+            recipe.RecipeIngredients = dto.RecipeIngredients.Select(_ => new RecipeIngredient
+            {
+                IngredientId = _.IngredientId,
+                Quantity = _.Quantity
+            }).ToHashSet();
+            recipe.RecipeSteps = dto.RecipeSteps.Select(_ => new RecipeStep
+            {
+                Description = _.Description,
+                Order = _.Order,
+                StepOperationId = _.StepOperationId
+            }).ToHashSet();
+        }
+        
         private static Recipe ExchangeAddDtoWithEntity(AddRecipeDto dto)
         {
             return new Recipe
@@ -74,6 +107,7 @@ namespace Cooking.Services.RecipeServices.Recipes
         {
             _ = recipe ?? throw new RecipeNotFoundException();
         }
+
         #endregion
     }
 }

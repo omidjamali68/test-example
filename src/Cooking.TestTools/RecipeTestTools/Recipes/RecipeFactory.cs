@@ -1,4 +1,3 @@
-using Cooking.Entities.Documents;
 using Cooking.Persistence.EF;
 using Cooking.Persistence.EF.RecipePersistence.Recipes;
 using Cooking.Services.RecipeServices.RecipeDocuments.Contracts;
@@ -6,7 +5,6 @@ using Cooking.Services.RecipeServices.RecipeIngredients.Contracts;
 using Cooking.Services.RecipeServices.Recipes;
 using Cooking.Services.RecipeServices.Recipes.Contracts;
 using Cooking.Services.RecipeServices.RecipeSteps.Contracts;
-using System;
 using System.Collections.Generic;
 
 namespace Cooking.TestTools.RecipeTestTools.Recipes
@@ -38,6 +36,26 @@ namespace Cooking.TestTools.RecipeTestTools.Recipes
                 RecipeDocuments = documents,
                 RecipeIngredients = ingredients,
                 RecipeSteps = steps
+            };
+        }
+
+        public static UpdateRecipeDto GenerateUpdateDto(
+            int nationalityId,
+            int categoryId,
+            HashSet<RecipeIngredientDto> ingredients,
+             HashSet<RecipeDocumentDto> documents,
+             HashSet<RecipeStepDto> steps,
+            string foodName = "نیمرو", 
+            short duration = 7)
+        {
+            return new UpdateRecipeDto{
+                Duration = duration,
+                FoodName= foodName,
+                NationalityId = nationalityId,
+                RecipeCategoryId = categoryId,
+                RecipeSteps = steps,
+                RecipeIngredients = ingredients,
+                RecipeDocuments = documents
             };
         }
     }

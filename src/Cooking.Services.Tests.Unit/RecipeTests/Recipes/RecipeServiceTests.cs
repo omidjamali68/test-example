@@ -136,5 +136,56 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.Recipes
             var excepted = await _readContext.Recipes.ToListAsync();
             excepted.Should().BeNullOrEmpty();
         }
+
+        [Fact]
+        private async Task Update_recipe_properly()
+        {
+            var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var ingredientUnit_first = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var ingredientUnit_second = new IngredientUnitBuilder()
+               .WithTitle("گرم")
+               .Build(_context);
+            var ingredientEgge = new IngredientBuilder(ingredientUnit_first.Id, document)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+            var ingredientOil = new IngredientBuilder(ingredientUnit_second.Id, document)
+                .WithTitle("روغن")
+                .Build(_context);
+            var stepOperation = new StepOperationBuilder(document)
+            .WithTitle("سرخ کردن")
+            .Build(_context);
+            var recipeCategory = new RecipeCategoryBuilder().Build(_context);
+            var nationality = new NationalityBuilder().Build(_context);
+            var recipe = new RecipeBuilder(nationality.Id, recipeCategory.Id)
+                .WithIngredient(ingredientEgge)
+                .WithIngredient(ingredientOil)
+                .WithStep(stepOperation)
+                .Build(_context);
+            var stepsDto = new HashSet<RecipeStepDto>{
+                RecipeStepFactory.GenerateDto(stepOperation.Id)
+            };
+            var ingredientsDto = new HashSet<RecipeIngredientDto>{
+                RecipeIngredientFactory.GenerateDto(ingredientOil.Id),
+                RecipeIngredientFactory.GenerateDto(ingredientEgge.Id)
+            };
+            var docsDto = new HashSet<RecipeDocumentDto>{
+                RecipeDocumentFactory.GenerateDto(document.Id)
+            };
+            var dto = RecipeFactory.GenerateUpdateDto(
+                nationality.Id,
+                recipeCategory.Id,
+                ingredientsDto,
+                docsDto,
+                stepsDto,
+                duration: 7);
+
+            await _sut.Update(dto, recipe.Id);
+
+            var expected = _readContext.Recipes.First(_ => _.Id == recipe.Id);
+            expected.Duration.Should().Be(dto.Duration);
+            expected.FoodName.Should().Be(dto.FoodName);
+        }
     }
 }
