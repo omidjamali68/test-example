@@ -138,6 +138,57 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.Recipes
         }
 
         [Fact]
+        private async Task Get_get_recipe_properly()
+        {
+            var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var ingredientUnit_first = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var ingredientUnit_second = new IngredientUnitBuilder()
+               .WithTitle("گرم")
+               .Build(_context);
+            var ingredientEgge = new IngredientBuilder(ingredientUnit_first.Id, document)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+            var ingredientOil = new IngredientBuilder(ingredientUnit_second.Id, document)
+                .WithTitle("روغن")
+                .Build(_context);
+            var stepOperation = new StepOperationBuilder(document)
+            .WithTitle("سرخ کردن")
+            .Build(_context);
+            var recipeCategory = new RecipeCategoryBuilder().Build(_context);
+            var nationality = new NationalityBuilder().Build(_context);
+            var recipe = new RecipeBuilder(nationality.Id, recipeCategory.Id)
+                .WithIngredient(ingredientEgge)
+                .WithIngredient(ingredientOil)
+                .WithStep(stepOperation)
+                .WithDocument(document.Id, document.Extension)
+                .Build(_context);
+            
+            var actual = await _sut.GetAsync(recipe.Id);
+
+            var expected = _readContext.Recipes
+                .Include(_ => _.RecipeIngredients)
+                .Include(_ => _.RecipeDocuments)
+                .Include(_ => _.RecipeSteps)
+                .First(_ => _.Id == actual.Id);
+            expected.FoodName.Should().Be(actual.FoodName);
+            expected.Duration.Should().Be(actual.Duration);
+            expected.RecipeCategoryId.Should().Be(actual.RecipeCategoryId);
+            expected.NationalityId.Should().Be(actual.NationalityId);
+            expected.RecipeIngredients.Should().Contain(_ => 
+            _.IngredientId == actual.RecipeIngredients.First().IngredientId &&
+            _.Quantity == actual.RecipeIngredients.First().Quantity);
+            expected.RecipeDocuments.Should().Contain(_ =>
+            _.DocumentId == actual.RecipeDocuments.First().DocumentId &&
+            _.Extension == actual.RecipeDocuments.First().Extension);
+            expected.RecipeSteps.Should().Contain(_ =>
+            _.Order == actual.RecipeSteps.First().Order &&
+            _.Description == actual.RecipeSteps.First().Description &&
+            _.StepOperationId == actual.RecipeSteps.First().StepOperationId);
+        }
+
+        [Fact]
         private async Task Update_recipe_properly()
         {
             var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);

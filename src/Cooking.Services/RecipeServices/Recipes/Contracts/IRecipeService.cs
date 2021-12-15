@@ -8,5 +8,6 @@ namespace Cooking.Services.RecipeServices.Recipes.Contracts
         Task<long> Add(AddRecipeDto dto);
         Task DeleteAsync(long id);
         Task Update(UpdateRecipeDto dto, long id);
+        Task<GetRecipeDto> GetAsync(long id);
     }
 }

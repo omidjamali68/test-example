@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cooking.Entities.Ingredients;
 using Cooking.Entities.Recipes;
 using Cooking.Infrastructure.Test;
 using Cooking.Persistence.EF;
+using Cooking.Services.RecipeServices.RecipeDocuments.Contracts;
+using Cooking.TestTools.RecipeTestTools.RecipeDocuments;
 using Cooking.TestTools.RecipeTestTools.RecipeIngredients;
 using Cooking.TestTools.RecipeTestTools.RecipeSteps;
 
@@ -30,7 +33,14 @@ namespace Cooking.TestTools.RecipeTestTools.Recipes
         {
             _recipe.RecipeSteps.Add(RecipeStepFactory.CreateInstance(stepOperation.Id));
             return this;
-        }    
+        }
+
+        public RecipeBuilder WithDocument(Guid docId, string extension)
+        {
+            _recipe.RecipeDocuments
+                .Add(RecipeDocumentFactory.CreateInstance(docId, extension));
+            return this;
+        }
 
         public Recipe Build(EFDataContext context)
         {

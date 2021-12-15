@@ -46,6 +46,12 @@ namespace Cooking.Services.RecipeServices.Recipes
 
             await _unitOfWork.CompleteAsync();
         }
+        
+        public async Task<GetRecipeDto> GetAsync(long id)
+        {
+            return await _repository.GetAsync(id);
+        }
+
 
         #region Helper Methods
 
@@ -107,6 +113,8 @@ namespace Cooking.Services.RecipeServices.Recipes
         {
             _ = recipe ?? throw new RecipeNotFoundException();
         }
+
+       
 
         #endregion
     }

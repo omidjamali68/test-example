@@ -9,5 +9,6 @@ namespace Cooking.Services.RecipeServices.Recipes.Contracts
         Task Add(Recipe recipe);
         void Remove(Recipe recipe);
         Task<Recipe> FindByIdAsync(long id);
+        Task<GetRecipeDto> GetAsync(long id);
     }
 }
