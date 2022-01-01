@@ -10,5 +10,9 @@ namespace Cooking.Services.RecipeServices.Recipes.Contracts
         void Remove(Recipe recipe);
         Task<Recipe> FindByIdAsync(long id);
         Task<GetRecipeDto> GetAsync(long id);
+        Task<PageResult<GetAllRecipeDto>> GetAllAsync(
+            string searchText,
+            Pagination pagination,
+            Sort<GetAllRecipeDto> sortExpression);
     }
 }

@@ -52,6 +52,13 @@ namespace Cooking.Services.RecipeServices.Recipes
             return await _repository.GetAsync(id);
         }
 
+        public async Task<PageResult<GetAllRecipeDto>> GetAllAsync(
+            string searchText,
+            Pagination pagination,
+            Sort<GetAllRecipeDto> sortExpression)
+        {
+            return await _repository.GetAllAsync(searchText, pagination, sortExpression);
+        }
 
         #region Helper Methods
 
@@ -109,12 +116,11 @@ namespace Cooking.Services.RecipeServices.Recipes
         #endregion
 
         #region Guard Methods
+
         public void GuardAgainstRecipeNotFound(Recipe recipe)
         {
             _ = recipe ?? throw new RecipeNotFoundException();
-        }
-
-       
+        }       
 
         #endregion
     }

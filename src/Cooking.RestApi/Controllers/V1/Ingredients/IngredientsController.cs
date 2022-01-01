@@ -21,9 +21,9 @@ namespace Cooking.RestApi.Controllers.V1.Ingredients
         }
 
         [HttpPost]
-        public async Task Add(AddIngredientDto dto)
+        public async Task<long> Add(AddIngredientDto dto)
         {
-            await _service.AddAsync(dto);
+            return await _service.AddAsync(dto);
         }
 
         [HttpPut("{id}")]
@@ -53,9 +53,16 @@ namespace Cooking.RestApi.Controllers.V1.Ingredients
             )
         {
             var sortParser = new UriSortParser();
-            var sortExpression = sort == null ? null : sortParser.Parse<GetAllIngredientDto>(sort);
-            var pagination = limit.HasValue && offset.HasValue ? Pagination.Of(offset.Value + 1, limit.Value) : null;
-            return await _service.GetAllAsync(searchText, pagination, sortExpression);
+            var sortExpression = sort == null 
+                ? null 
+                : sortParser.Parse<GetAllIngredientDto>(sort);
+            var pagination = limit.HasValue && offset.HasValue 
+                ? Pagination.Of(offset.Value + 1, limit.Value) 
+                : null;
+            return await _service.GetAllAsync(
+                searchText,
+                pagination,
+                sortExpression);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Cooking.Entities.Recipes;
+using Cooking.Infrastructure.Application;
 using Cooking.Services.RecipeServices.RecipeDocuments.Contracts;
 using Cooking.Services.RecipeServices.RecipeIngredients.Contracts;
 using Cooking.Services.RecipeServices.Recipes.Contracts;
@@ -30,12 +31,47 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
             return await _recipes.FindAsync(id);
         }
 
+        public async Task<PageResult<GetAllRecipeDto>> GetAllAsync(
+            string searchText,
+            Pagination pagination,
+            Sort<GetAllRecipeDto> sortExpression)
+        {
+            var results = _recipes.Select(_ => new GetAllRecipeDto
+            {
+                Id = _.Id,
+                FoodName = _.FoodName,
+                Duration = _.Duration,
+                RecipeCategoryTitle = _.RecipeCategory.Title,
+                NationalityName = _.Nationality.Name
+            });
+
+            if (searchText != null)
+                results = FilterSearchText(searchText, results);
+
+            if (sortExpression != null) results = results.Sort(sortExpression);
+
+            PageResult<GetAllRecipeDto> pageResult = null;
+
+            if (pagination != null)
+            {
+                pageResult = results.PageResult(pagination);
+            }
+            else
+            {
+                var resultList = await results?.ToListAsync();
+                if (resultList != null)
+                    pageResult = new PageResult<GetAllRecipeDto>(
+                        resultList,
+                        resultList.Count);
+            }
+            return pageResult;
+        }
+
         public async Task<GetRecipeDto> GetAsync(long id)
         {
             return await _recipes.Where(_ => _.Id == id)
                 .Select(_ => new GetRecipeDto
                 {
-                    Id = _.Id,
                     FoodName = _.FoodName,
                     Duration = _.Duration,
                     NationalityId = _.NationalityId,
@@ -69,5 +105,21 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
         {
             _recipes.Remove(recipe);
         }
+
+        #region Helper Methods
+
+        private IQueryable<GetAllRecipeDto> FilterSearchText(
+            string searchText,
+            IQueryable<GetAllRecipeDto> results
+            )
+        {
+            return results
+                .Where(_ =>
+                _.FoodName.Replace(" ", "").Contains(searchText.Replace(" ", "")) ||
+                _.RecipeCategoryTitle.Replace(" ", "").Contains(searchText.Replace(" ", "")) ||
+                _.NationalityName.Replace(" ", "").Contains(searchText.Replace(" ", "")));
+        }
+
+        #endregion
     }
 }
