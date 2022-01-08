@@ -15,9 +15,6 @@ namespace Cooking.Services.UserManagement.Contracts
         Task ChangePassword(ChangePasswordDto dto);
         Task<AccountExistInfoDto> IsAccountExistAndVerified(AccountExistDto dto);
         Task<ApplicationUserDto> GetUserDtoById(Guid userId);
-        Task<ApplicationUser> FindUserById(Guid userId);
-        Task AddUserToRole(Guid userId, string role);
-        Task<Guid> CreateVerifiedApplicationUser(CreateVerifiedApplicationUserDto dto);
         Task SetUserTimeZone(SetUserTimeZoneDto dto);
         Task<IList<Claim>> GetClaimsAsync(ApplicationUser applicationUser);
         Task<IList<string>> GetRolesAsync(ApplicationUser applicationUser);

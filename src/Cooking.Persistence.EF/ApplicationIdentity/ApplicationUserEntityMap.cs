@@ -29,10 +29,6 @@ namespace Cooking.Persistence.EF.ApplicationIdentity
                 .IsRequired(false)
                 .HasMaxLength(50);
 
-            builder.Property(_ => _.FatherName)
-                .IsRequired(false)
-                .HasMaxLength(50);
-
             builder.Property(_ => _.NationalCode)
                 .HasMaxLength(10)
                 .IsRequired();

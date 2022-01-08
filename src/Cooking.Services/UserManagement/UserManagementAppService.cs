@@ -41,17 +41,16 @@ namespace Cooking.Services.UserManagement
 
         public async Task CreateApplicationUserRequest(CreateApplicationUserRequestDto dto)
         {
-            if (NationalCodeValidator.IsValid(dto.NationalCode) == false)
-                throw new InvalidNationalCodeException();
+            GuardAgainstInvalidNationalCode(dto.NationalCode);
 
             await GuardAgainstDuplicateRegisteration(dto.NationalCode);
 
             await GuardAgainstSendMoreSmsThanSpecifiedNumber(dto.NationalCode);
 
-            //dto.CountryCallingCode = NormalizeCountryCallingCode(dto.CountryCallingCode);
+            dto.CountryCallingCode = NormalizeCountryCallingCode(dto.CountryCallingCode);
             var userMobile = new Mobile
             {
-                CountryCallingCode = "+98", //dto.CountryCallingCode,
+                CountryCallingCode = dto.CountryCallingCode,
                 MobileNumber = dto.MobileNumber
             };
 
@@ -62,29 +61,25 @@ namespace Cooking.Services.UserManagement
                 Mobile = userMobile,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
-                FatherName = dto.FatherName,
                 Email = dto.Email,
                 CreationDate = _dateTime.Now
             };
 
             var userCreationResult =
                 await _userManager.CreateAsync(applicationUser, applicationUser.Mobile.MobileNumber);
-            if (!userCreationResult.Succeeded)
-                throw new CreateApplicationUserFailedException();
+            GuardAgainstCreateApplicationUserFailed(userCreationResult);
 
             var addUserToRoleResult = await _userManager.AddToRoleAsync(applicationUser, dto.RoleName);
-            if (!addUserToRoleResult.Succeeded)
-                throw new AddUserToRoleFaildException();
+            GuardAgainstAddUserToRoleFaild(addUserToRoleResult);
 
             applicationUser = await _userManager.FindByNameAsync(dto.NationalCode);
 
             await _unitOfWork.CompleteAsync();
 
-            //Send Verification Code
-            //var verificationCode = VerificationCode.Generate();
-            //var smsResult = SendSms(userMobile, SMSMessageTemplate.FepcoCookingVerificationCode,
-            //    verificationCode);
-            //await SaveApplicationUserVerificationCode(dto.NationalCode, userMobile, verificationCode, smsResult);
+            var verificationCode = VerificationCode.Generate();
+            var smsResult = SendSms(userMobile, SMSMessageTemplate.FepcoCookingVerificationCode,
+               verificationCode);
+            await SaveApplicationUserVerificationCode(dto.NationalCode, userMobile, verificationCode, smsResult);
         }
 
         public async Task<Guid> ConfirmVerificationCodeAndCreateUser(ConfirmVerificationCodeDto dto)
@@ -94,8 +89,7 @@ namespace Cooking.Services.UserManagement
             var userVerification =
                 await _repository.GetLastUserUnExpiredVerificationCode(dto.NationalCode,
                     EXPIRE_VERIFICATIONCODE_TIME_MINUTE);
-            if (userVerification == null)
-                throw new VerificationCodeNotExistException();
+            GuardAgainstVerificationCodeNotExist(userVerification);
             if (userVerification.VerificationCode != dto.VerificationCode) throw new WrongVerificationCodeException();
 
             var applicationUser = new ApplicationUser();
@@ -110,12 +104,10 @@ namespace Cooking.Services.UserManagement
 
                 var userCreationResult =
                     await _userManager.CreateAsync(applicationUser, applicationUser.Mobile.MobileNumber);
-                if (!userCreationResult.Succeeded)
-                    throw new CreateApplicationUserFailedException();
+                GuardAgainstCreateApplicationUserFailed(userCreationResult);
 
                 var addUserToRoleResult = await _userManager.AddToRoleAsync(applicationUser, dto.roleName);
-                if (!addUserToRoleResult.Succeeded)
-                    throw new AddUserToRoleFaildException();
+                GuardAgainstAddUserToRoleFaild(addUserToRoleResult);
 
             }
             else
@@ -127,7 +119,6 @@ namespace Cooking.Services.UserManagement
             return applicationUser.Id;
         }
 
-        //TODO:Resend not send
         public async Task SendVerificationCode(SendVerificationCodeDto dto)
         {
             await GuardAgainstDuplicateRegisteration(dto.NationalCode);
@@ -135,14 +126,15 @@ namespace Cooking.Services.UserManagement
             await GuardAgainstSendMoreSmsThanSpecifiedNumber(dto.NationalCode);
 
             var userOldVerificationCode = await _repository.GetLastUserVerificationCode(dto.NationalCode);
-            if (userOldVerificationCode == null) throw new NotRegisteredNationalCodeException();
+            GuardAgainstNotRegisterNationalCode(userOldVerificationCode);
 
             var verificationCode = VerificationCode.Generate();
             var userMobile = userOldVerificationCode.Mobile;
 
-            var result = SendSms(userMobile,
-            SMSMessageTemplate.FepcoCookingVerificationCode,
-            verificationCode);
+            var result = SendSms(
+                userMobile,
+                SMSMessageTemplate.FepcoCookingVerificationCode,
+                verificationCode);
 
             await SaveApplicationUserVerificationCode(dto.NationalCode, userMobile, verificationCode, result);
         }
@@ -152,9 +144,7 @@ namespace Cooking.Services.UserManagement
             var applicationUser = await _userManager.GetUserAsync(dto.GetUserClaims());
             var identityResult =
                 await _userManager.ChangePasswordAsync(applicationUser, dto.CurrentPassword, dto.NewPassword);
-
-            if (!identityResult.Succeeded)
-                throw new ChangePasswordFailedException();
+            GuardAgainstChangePasswordFailed(identityResult);
         }
 
         public async Task<AccountExistInfoDto> IsAccountExistAndVerified(AccountExistDto dto)
@@ -165,7 +155,6 @@ namespace Cooking.Services.UserManagement
             var applicationUsers =
                 await _repository.GetRegistredUsers(dto.NationalCode, dto.CountryCallingCode, dto.MobileNumber);
 
-            //TODO: if not needed default bool value is false
             if (!applicationUsers.Any())
             {
                 accountInfo.NationalCodeExist = false;
@@ -187,55 +176,10 @@ namespace Cooking.Services.UserManagement
             return await _repository.GetUserById(userId);
         }
 
-        public async Task AddUserToRole(Guid userId, string role)
-        {
-            var applicationUser = await _repository.FindUserById(userId);
-
-            if (applicationUser == null)
-                throw new UserNotFoundException();
-
-            await _userManager.AddToRoleAsync(applicationUser, role);
-        }
-
-        public async Task<Guid> CreateVerifiedApplicationUser(CreateVerifiedApplicationUserDto dto)
-        {
-            dto.CountryCallingCode = NormalizeCountryCallingCode(dto.CountryCallingCode);
-
-            if (await _repository.IsNationalCodeRegistered(dto.NationalCode))
-            {
-                var user = await _repository.FindUserByNationalCode(dto.NationalCode);
-                if (!await _userManager.IsInRoleAsync(user, dto.roleName))
-                    await _userManager.AddToRoleAsync(user, dto.roleName);
-
-                return user.Id;
-            }
-
-            var applicationUser = new ApplicationUser
-            {
-                Id = dto.UserId,
-                NationalCode = dto.NationalCode,
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                Mobile = new Mobile { CountryCallingCode = dto.CountryCallingCode, MobileNumber = dto.MobileNumber },
-                UserName = dto.NationalCode,
-                CreationDate = _dateTime.Now
-            };
-
-            var Identityresult = await _userManager.CreateAsync(applicationUser, dto.MobileNumber);
-
-            if (!Identityresult.Succeeded)
-                throw new CreateApplicationUserFailedException();
-
-            await _userManager.AddToRoleAsync(applicationUser, dto.roleName);
-
-            return applicationUser.Id;
-        }
-
         public async Task SetUserTimeZone(SetUserTimeZoneDto dto)
         {
             var applicationUser = await _repository.FindUserById(dto.GetUserId());
-            if (applicationUser == null)
-                throw new UserNotFoundException();
+            GuardAgainstUserNotFound(applicationUser);
 
             await _unitOfWork.CompleteAsync();
         }
@@ -266,19 +210,52 @@ namespace Cooking.Services.UserManagement
             return await _userManager.GetRolesAsync(applicationUser);
         }
 
-        public async Task<ApplicationUser> FindUserById(Guid userId)
+        private static void GuardAgainstChangePasswordFailed(IdentityResult identityResult)
         {
-            return await _repository.FindUserById(userId);
+            if (!identityResult.Succeeded)
+                throw new ChangePasswordFailedException();
         }
 
-        //TODO:Move private method to end of class
+        private static void GuardAgainstUserNotFound(ApplicationUser applicationUser)
+        {
+            if (applicationUser == null)
+                throw new UserNotFoundException();
+        }
+
+        private static void GuardAgainstVerificationCodeNotExist(IdentityVerificationCode userVerification)
+        {
+            if (userVerification == null)
+                throw new VerificationCodeNotExistException();
+        }
+        private static void GuardAgainstNotRegisterNationalCode(IdentityVerificationCode userOldVerificationCode)
+        {
+            if (userOldVerificationCode == null) throw new NotRegisteredNationalCodeException();
+        }
+        
+        private static void GuardAgainstAddUserToRoleFaild(IdentityResult addUserToRoleResult)
+        {
+            if (!addUserToRoleResult.Succeeded)
+                throw new AddUserToRoleFaildException();
+        }
+
+        private static void GuardAgainstCreateApplicationUserFailed(IdentityResult userCreationResult)
+        {
+            if (!userCreationResult.Succeeded)
+                throw new CreateApplicationUserFailedException();
+        }
+
+        private static void GuardAgainstInvalidNationalCode(string nationalCode)
+        {
+            if (NationalCodeValidator.IsValid(nationalCode) == false)
+                throw new InvalidNationalCodeException();
+        }
+        
         private async Task GuardAgainstDuplicateRegisteration(string nationalCode)
         {
             if (await _repository.IsNationalCodeRegistered(nationalCode))
                 throw new UserAlreadyExistException();
         }
 
-        //TODO:Move private method to end of class
         private async Task SaveApplicationUserVerificationCode(string userNationalCode, Mobile userMobile,
             uint verificationCode, string result)
         {

@@ -8,6 +8,8 @@ namespace Cooking.Services.UserManagement.Contracts
         public string NationalCode { get; set; }
         [Required] 
         public string MobileNumber { get; set; }
+        [Required]
+        public string CountryCallingCode { get; set; }
         [Required] 
         public string RoleName { get; set; }
         [Required]
@@ -16,8 +18,6 @@ namespace Cooking.Services.UserManagement.Contracts
         [Required]
         [MaxLength(50)]
         public string LastName { get; set; }
-        [MaxLength(50)]
-        public string FatherName { get; set; }
         [MaxLength(80)]
         public string Email { get; set; }
     }

@@ -8,7 +8,6 @@ CREATE TABLE [dbo].[ApplicationUsers](
 	[UserName] [nvarchar](50) NOT NULL UNIQUE,
 	[FirstName] [nvarchar](50) NULL ,
 	[LastName] [nvarchar](50) NULL ,
-	[FatherName] [nvarchar](50) Null,
 	[NormalizedUserName] [nvarchar](50) NOT NULL,
 	[PasswordHash] [nvarchar](max) NOT NULL,
 	[SecurityStamp] [nvarchar](max) NULL,
