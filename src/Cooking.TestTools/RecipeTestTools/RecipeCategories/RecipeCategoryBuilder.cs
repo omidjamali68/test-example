@@ -10,6 +10,11 @@ namespace Cooking.TestTools.RecipeTestTools.RecipeCategories
             Title = "dummy_title"
         };
 
+        public RecipeCategoryBuilder WithTitle(string title)
+        {
+            _recipeCategory.Title = title ;
+            return this;
+        }
         public RecipeCategory Build(EFDataContext context)
         {
             context.Manipulate(_ => _.RecipeCategories.Add(_recipeCategory));

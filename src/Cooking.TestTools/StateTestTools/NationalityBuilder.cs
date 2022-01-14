@@ -10,6 +10,11 @@ namespace Cooking.TestTools.StateTestTools
             Name = "dummy_name"
         };
 
+        public NationalityBuilder WithName(string name)
+        {
+            _nationality.Name = name;
+            return this;
+        }
         public Nationality Build(EFDataContext context)
         {
             context.Manipulate(_ => _.Nationalities.Add(_nationality));
