@@ -8,6 +8,6 @@ namespace Cooking.Services.RecipeServices.RecipeCtegories.Contracts
 {
     public interface IRecipeCategoryService : IService
     {
-        Task<IList<GetAllRecipeCategoryDto>> GetAll();
+        Task<IList<GetAllRecipeCategoryDto>> GetAll(string searchText);
     }
 }

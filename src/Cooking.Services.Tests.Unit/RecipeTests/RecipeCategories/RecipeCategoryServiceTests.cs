@@ -35,11 +35,28 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.RecipeCategories
                 .WithTitle("کباب")
                 .Build(_context);
 
-            var expected = await _sut.GetAll();
+            var expected = await _sut.GetAll(null);
 
             expected.Should().HaveCount(2);
             expected.Should().Contain(_ => _.Id == firstCategory.Id &&
                                            _.Title == firstCategory.Title);
+            expected.Should().Contain(_ => _.Id == secondCategory.Id &&
+                                           _.Title == secondCategory.Title);
+        }
+
+        [Fact]
+        private async Task Get_get_all_recipeCategories_with_searchText_properly()
+        {
+            var firstCategory = new RecipeCategoryBuilder()
+                .WithTitle("FastFood")
+                .Build(_context);
+            var secondCategory = new RecipeCategoryBuilder()
+                .WithTitle("کباب")
+                .Build(_context);
+
+            var expected = await _sut.GetAll("کبا");
+
+            expected.Should().HaveCount(1);
             expected.Should().Contain(_ => _.Id == secondCategory.Id &&
                                            _.Title == secondCategory.Title);
         }

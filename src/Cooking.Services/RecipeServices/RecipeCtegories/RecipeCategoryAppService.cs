@@ -13,9 +13,9 @@ namespace Cooking.Services.RecipeServices.RecipeCtegories
             _repository = repository;
         }
 
-        public async Task<IList<GetAllRecipeCategoryDto>> GetAll()
+        public async Task<IList<GetAllRecipeCategoryDto>> GetAll(string searchText)
         {
-            return await _repository.GetAll();
+            return await _repository.GetAll(searchText);
         }
 
     }

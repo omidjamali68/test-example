@@ -18,9 +18,9 @@ namespace Cooking.RestApi.Controllers.V1.Recipes
         }
 
         [HttpGet]
-        public async Task<IList<GetAllRecipeCategoryDto>> GetAll()
+        public async Task<IList<GetAllRecipeCategoryDto>> GetAll([FromQuery] string searchText)
         {
-            return await _service.GetAll();
+            return await _service.GetAll(searchText);
         }
     }
 }

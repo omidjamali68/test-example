@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Cooking.Entities.Recipes;
+using Cooking.Infrastructure.Test;
 using Cooking.Services.RecipeServices.RecipeCtegories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,12 +19,25 @@ namespace Cooking.Persistence.EF.RecipePersistence.RecipeCategories
             _recipeCategories = context.Set<RecipeCategory>();
         }
 
-        public async Task<IList<GetAllRecipeCategoryDto>> GetAll()
+        public async Task<IList<GetAllRecipeCategoryDto>> GetAll(string searchText)
         {
-            return await _recipeCategories.Select(_ => new GetAllRecipeCategoryDto{
+            var result = _recipeCategories.Select(_ => new GetAllRecipeCategoryDto{
                 Id = _.Id,
                 Title = _.Title
-            }).ToListAsync();
+            });
+
+            if (!string.IsNullOrWhiteSpace(searchText))
+                result = SearchForText(searchText, result);
+
+            return await result.ToListAsync();
+        }
+
+        private IQueryable<GetAllRecipeCategoryDto> SearchForText(
+            string searchText, 
+            IQueryable<GetAllRecipeCategoryDto> result)
+        {
+            return result.Where(_ => _.Title.ToLower().Replace(" ", "")
+                .Contains(searchText.ToLower().Replace(" ", "")));
         }
     }
 }
