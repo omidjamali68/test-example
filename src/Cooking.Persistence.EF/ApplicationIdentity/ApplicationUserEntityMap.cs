@@ -10,16 +10,11 @@ namespace Cooking.Persistence.EF.ApplicationIdentity
         {
             builder.ToTable("ApplicationUsers");
 
-
-            builder.Ignore(e => e.EmailConfirmed)
-                .Ignore(e => e.NormalizedEmail)
-                .Ignore(e => e.PhoneNumber)
-                .Ignore(e => e.PhoneNumberConfirmed);
             builder.Property(_ => _.UserName)
-                .HasMaxLength(50);
+                .HasMaxLength(100);
 
             builder.Property(_ => _.NormalizedUserName)
-                .HasMaxLength(50);
+                .HasMaxLength(100);
 
             builder.Property(_ => _.FirstName)
                 .IsRequired(false)
@@ -36,13 +31,19 @@ namespace Cooking.Persistence.EF.ApplicationIdentity
             builder.Property(_ => _.Email)
                 .IsRequired(false);
 
-            builder.Property(_ => _.CreationDate);
+            builder.Property(_ => _.EmailConfirmed)
+                .IsRequired(false);
 
-            builder.OwnsOne(_ => _.Mobile, _ =>
-            {
-                _.Property(_ => _.CountryCallingCode);
-                _.Property(_ => _.MobileNumber);
-            });
+            builder.Property(_ => _.NormalizedEmail)
+                .IsRequired(false);
+
+            builder.Property(_ => _.PhoneNumber)
+                .IsRequired(false);
+
+            builder.Property(_ => _.PhoneNumberConfirmed)
+                .IsRequired(false);
+
+            builder.Property(_ => _.CreationDate);
 
         }
     }

@@ -10,15 +10,7 @@ namespace Cooking.Persistence.EF.ApplicationIdentity
         {
             builder.ToTable("VerificationCodes");
 
-            builder.OwnsOne(_ => _.Mobile, _ =>
-            {
-                _.Property(_ => _.MobileNumber)
-                    .IsRequired()
-                    .HasMaxLength(11);
-
-                _.Property(_ => _.CountryCallingCode)
-                    .IsRequired(false);
-            });
+            builder.Property(_ => _.PhoneNumber);
         }
     }
 }

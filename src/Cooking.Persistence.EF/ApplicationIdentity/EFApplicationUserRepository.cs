@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cooking.Entities.ApplicationIdentities;
-using Cooking.Entities.CommonEntities;
 using Cooking.Infrastructure;
 using Cooking.Services.UserManagement.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -31,38 +30,38 @@ namespace Cooking.Persistence.EF.ApplicationIdentity
 
         //TODO:Remove User from Method Name
         public async Task<IdentityVerificationCode> GetLastUserUnExpiredVerificationCode(
-            string nationalCode,
+            string phoneNumber,
             int expireTime)
         {
             var now = _dateTime.Now.Subtract(new TimeSpan(0, expireTime, 0));
 
             return await _context.VerificationCodes
-                .Where(_ => _.NationalCode == nationalCode && _.VerificationDate > now)
+                .Where(_ => _.PhoneNumber == phoneNumber && _.VerificationDate > now)
                 .OrderByDescending(_ => _.VerificationDate)
                 .FirstOrDefaultAsync();
         }
 
         public async Task<IdentityVerificationCode> GetLastUserVerificationCode(
-            string nationalCode)
+            string phoneNumber)
         {
             return await _context.VerificationCodes
-                .Where(_ => _.NationalCode == nationalCode)
+                .Where(_ => _.PhoneNumber == phoneNumber)
                 .OrderByDescending(_ => _.VerificationDate)
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<int> GetUsersSentSmesOfTodayCount(string nationalCode)
+        public async Task<int> GetUsersSentSmesOfTodayCount(string phoneNumber)
         {
             var now = _dateTime.Now.Subtract(new TimeSpan(HOURS_OF_DAY, 0, 0));
 
             return await _context.VerificationCodes
-                .Where(_ => _.NationalCode == nationalCode && _.VerificationDate > now)
+                .Where(_ => _.PhoneNumber == phoneNumber && _.VerificationDate > now)
                 .CountAsync();
         }
 
-        public async Task<bool> IsNationalCodeRegistered(string nationalCode)
+        public async Task<bool> IsPhoneNumberRegistered(string phoneNumber)
         {
-            return await _applicationUsers.AnyAsync(_ => _.NationalCode == nationalCode);
+            return await _applicationUsers.AnyAsync(_ => _.PhoneNumber == phoneNumber);
         }
 
         public async Task<ApplicationUserDto> GetUserById(Guid userId)
@@ -71,8 +70,7 @@ namespace Cooking.Persistence.EF.ApplicationIdentity
                 .Select(_ => new ApplicationUserDto
                 {
                     Id = _.Id,
-                    CountryCallingCode = _.Mobile.CountryCallingCode,
-                    MobileNumber = _.Mobile.MobileNumber,
+                    MobileNumber = _.PhoneNumber,
                     NationalCode = _.NationalCode,
                     UserName = _.UserName
                 })
@@ -85,31 +83,26 @@ namespace Cooking.Persistence.EF.ApplicationIdentity
         }
 
         public async Task<IList<ApplicationUser>> GetRegistredUsers(
-            string nationalCode,
-            string countryCallingCode,
             string mobileNumber)
         {
-            return await _applicationUsers.Where(_ => _.Mobile.CountryCallingCode == countryCallingCode
-                                                      && _.Mobile.MobileNumber == mobileNumber
-                                                      || _.NationalCode == nationalCode)
+            return await _applicationUsers.Where(_ => _.PhoneNumber == mobileNumber)
                 .Select(_ => new ApplicationUser
                 {
                     NationalCode = _.NationalCode,
-                    Mobile = new Mobile
-                        {CountryCallingCode = _.Mobile.CountryCallingCode, MobileNumber = _.Mobile.MobileNumber}
+                    PhoneNumber = _.PhoneNumber
                 })
                 .ToListAsync();
         }
 
-        public async Task RemoveRegisterdUserVerificationCodes(string nationalCode)
+        public async Task RemoveRegisterdUserVerificationCodes(string phoneNumber)
         {
             _context.VerificationCodes.RemoveRange(
-                await GetAllUserVerificationCodes(nationalCode));
+                await GetAllUserVerificationCodes(phoneNumber));
         }
 
-        private async Task<List<IdentityVerificationCode>> GetAllUserVerificationCodes(string nationalCode)
+        private async Task<List<IdentityVerificationCode>> GetAllUserVerificationCodes(string phoneNumber)
         {
-            return await _context.VerificationCodes.Where(_ => _.NationalCode == nationalCode)
+            return await _context.VerificationCodes.Where(_ => _.PhoneNumber == phoneNumber)
                 .ToListAsync();
         }
     }

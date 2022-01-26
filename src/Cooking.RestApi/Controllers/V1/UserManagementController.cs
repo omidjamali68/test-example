@@ -66,15 +66,11 @@ namespace Cooking.RestApi.Controllers.V1
         [Obsolete]
         [HttpGet("account-exist")]
         public async Task<AccountExistInfoDto> AccountExist(
-            [FromQuery][Required] string nationalCode,
-            [FromQuery][Required] string mobileNumber,
-            [FromQuery][Required] string countryCallingCode)
+            [FromQuery][Required] string mobileNumber)
         {
             var dto = new AccountExistDto
             {
-                CountryCallingCode = countryCallingCode,
                 MobileNumber = mobileNumber,
-                NationalCode = nationalCode
             };
             return await _service.IsAccountExistAndVerified(dto);
         }

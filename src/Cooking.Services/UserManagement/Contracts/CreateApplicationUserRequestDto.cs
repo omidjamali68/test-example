@@ -4,20 +4,12 @@ namespace Cooking.Services.UserManagement.Contracts
 {
     public class CreateApplicationUserRequestDto
     {
+        [Cooking.Infrastructure.Application.Validations.MobileNumber]
         [Required] 
-        public string NationalCode { get; set; }
-        [Required] 
-        public string MobileNumber { get; set; }
-        [Required]
-        public string CountryCallingCode { get; set; }
+        public string PhoneNumber { get; set; }
         [Required] 
         public string RoleName { get; set; }
-        [Required]
-        [MaxLength(50)]
-        public string FirstName { get; set; }
-        [Required]
-        [MaxLength(50)]
-        public string LastName { get; set; }
+        // todo: Add Email Authentication service later 
         [MaxLength(80)]
         public string Email { get; set; }
     }

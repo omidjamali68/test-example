@@ -16,10 +16,11 @@ CREATE TABLE [dbo].[ApplicationUsers](
 	[LockoutEnd] [datetimeoffset](7) NULL,
 	[LockoutEnabled] [bit] NOT NULL,
 	[AccessFailedCount] [int] NOT NULL,
-	[NationalCode] [varchar](20) NOT NULL UNIQUE,
-	[Mobile_CountryCallingCode] [varchar](20) NOT NULL,
-	[Mobile_MobileNumber] [varchar](20)NOT NULL,
+	[NationalCode] [varchar](10) NULL,
+	[PhoneNumber] [varchar](20) Null,
+	[PhoneNumberConfirmed] [bit] Null,
 	[Email] [nvarchar](100) Null,
+	[EmailConfirmed] [bit] Null,
 	[CreationDate] [datetime2] NOT NULL,
  CONSTRAINT [PK_ApplicationUsers] PRIMARY KEY CLUSTERED 
 (
@@ -35,11 +36,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[VerificationCodes](
 	[Id] [bigint] identity(1,1) NOT NULL,
-	[NationalCode] [varchar](20) NOT NULL,
 	[VerificationCode] [bigint] NOT NULL,
 	[VerificationDate] [datetime2](7) NOT NULL,
-	[Mobile_CountryCallingCode] [varchar](20) NOT NULL,
-	[Mobile_MobileNumber] [varchar](20)NOT NULL,
+	[PhoneNumber] [varchar](20) NULL,
+	[Email] [varchar](100) NULL,
 	[SMSResultDesc] [nvarchar](1000) NULL,
  CONSTRAINT [PK_VerificationCodes] PRIMARY KEY CLUSTERED 
 (

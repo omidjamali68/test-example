@@ -62,7 +62,7 @@ namespace Cooking.RestApi.Configs
                 if (!context.Set<ApplicationUser>().Any())
                 {
                     var admin = GenerateAdmin();
-                    var createdResult = await userManager.CreateAsync(admin, "123456");
+                    var createdResult = await userManager.CreateAsync(admin, "Avangard@1400");
                     if (createdResult.Succeeded)
                         await userManager.AddToRoleAsync(admin, UserRoles.Admin);
                 }
@@ -76,13 +76,9 @@ namespace Cooking.RestApi.Configs
                 FirstName = "Admin",
                 LastName = "Admin",
                 CreationDate = DateTime.Now,
-                Mobile = new Mobile
-                {
-                    CountryCallingCode = "0098",
-                    MobileNumber = "9178116474"
-                },
+                PhoneNumber = "9178116474",
                 NationalCode = "2301064506",
-                UserName = "2301064506"
+                UserName = "9178116474"
             };
         }
     }

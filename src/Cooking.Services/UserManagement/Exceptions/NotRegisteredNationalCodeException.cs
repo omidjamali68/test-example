@@ -2,7 +2,7 @@
 
 namespace Cooking.Services.UserManagement.Exceptions
 {
-    public class NotRegisteredNationalCodeException : BusinessException
+    public class NotRegisteredUserException : BusinessException
     {
     }
 }

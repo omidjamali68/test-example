@@ -9,14 +9,13 @@ namespace Cooking.Services.UserManagement.Contracts
     public interface IApplicationUserRepository : IRepository
     {
         void AddUserVerificationCode(IdentityVerificationCode verificationCode);
-        Task<IdentityVerificationCode> GetLastUserUnExpiredVerificationCode(string nationalCode, int expireTime);
-        Task<IdentityVerificationCode> GetLastUserVerificationCode(string nationalCode);
-        Task<int> GetUsersSentSmesOfTodayCount(string nationalCode);
-        Task<bool> IsNationalCodeRegistered(string nationalCode);
+        Task<IdentityVerificationCode> GetLastUserUnExpiredVerificationCode(string phoneNumber, int expireTime);
+        Task<IdentityVerificationCode> GetLastUserVerificationCode(string phoneNumber);
+        Task<int> GetUsersSentSmesOfTodayCount(string phoneNumber);
+        Task<bool> IsPhoneNumberRegistered(string phoneNumber);
         Task<ApplicationUserDto> GetUserById(Guid userId);
         Task<ApplicationUser> FindUserById(Guid userId);
-        Task<IList<ApplicationUser>> GetRegistredUsers(string nationalCode, string countryCallingCode,
-            string mobileNumber);
-        Task RemoveRegisterdUserVerificationCodes(string nationalCode);
+        Task<IList<ApplicationUser>> GetRegistredUsers(string phoneNumber);
+        Task RemoveRegisterdUserVerificationCodes(string phoneNumber);
     }
 }

@@ -4,7 +4,7 @@ namespace Cooking.Services.UserManagement.Contracts
 {
     public class ConfirmVerificationCodeDto
     {
-        [Required] public string NationalCode { get; set; }
+        [Required] public string PhoneNumber { get; set; }
 
         [Required] public string LanguageCode { get; set; }
 

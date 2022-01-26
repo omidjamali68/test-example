@@ -2,9 +2,6 @@
 {
     public enum SMSMessageTemplate
     {
-        Unknown = 0,
-        TaavSystemRecruitmentVerificationCode = 6371,
-        FepcoRecruitmentVerificationCode = 8446,
-        FepcoCookingVerificationCode = 48067
+        CookingVerificationCode = 48067
     }
 }

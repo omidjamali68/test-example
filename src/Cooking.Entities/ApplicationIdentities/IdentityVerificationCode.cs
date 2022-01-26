@@ -1,5 +1,4 @@
 ﻿using System;
-using Cooking.Entities.CommonEntities;
 
 namespace Cooking.Entities.ApplicationIdentities
 {
@@ -9,7 +8,7 @@ namespace Cooking.Entities.ApplicationIdentities
         public uint VerificationCode { get; set; }
         public DateTime VerificationDate { get; set; }
         public string SMSResultDesc { get; set; }
-        public string NationalCode { get; set; }
-        public Mobile Mobile { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }
