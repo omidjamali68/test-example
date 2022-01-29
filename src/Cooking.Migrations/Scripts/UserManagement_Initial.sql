@@ -18,9 +18,10 @@ CREATE TABLE [dbo].[ApplicationUsers](
 	[AccessFailedCount] [int] NOT NULL,
 	[NationalCode] [varchar](10) NULL,
 	[PhoneNumber] [varchar](20) Null,
-	[PhoneNumberConfirmed] [bit] Null,
+	[PhoneNumberConfirmed] [bit] NOT Null,
 	[Email] [nvarchar](100) Null,
-	[EmailConfirmed] [bit] Null,
+	[NormalizedEmail] [nvarchar](100) NULL,
+	[EmailConfirmed] [bit] NOT NULL,
 	[CreationDate] [datetime2] NOT NULL,
  CONSTRAINT [PK_ApplicationUsers] PRIMARY KEY CLUSTERED 
 (

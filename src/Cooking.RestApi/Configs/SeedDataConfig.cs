@@ -22,7 +22,7 @@ namespace Cooking.RestApi.Configs
         public override void ConfigureApplication(IApplicationBuilder app)
         {
             var seedDataService = app.ApplicationServices.GetRequiredService<SeedDataService>();
-            seedDataService.Initialize();
+            _ = seedDataService.Initialize();
         }
     }
 
@@ -78,7 +78,10 @@ namespace Cooking.RestApi.Configs
                 CreationDate = DateTime.Now,
                 PhoneNumber = "9178116474",
                 NationalCode = "2301064506",
-                UserName = "9178116474"
+                UserName = "9178116474",
+                NormalizedUserName = "9178116474",
+                PhoneNumberConfirmed = true,
+                EmailConfirmed = true
             };
         }
     }

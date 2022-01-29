@@ -10,11 +10,13 @@ namespace Cooking.Migrations
             Execute.EmbeddedScript("IranGeoData.sql");
             Execute.EmbeddedScript("InitialIngredientUnits.sql");
             Execute.EmbeddedScript("InitialRecipeCategories.sql");
+            Execute.EmbeddedScript("InitialNationalities.sql");
 
         }
 
         public override void Down()
         {
+            Execute.Sql("DELETE FROM Nationalities;");
             Execute.Sql("DELETE FROM RecipeCategories;");
             Execute.Sql("DELETE FROM IngredientUnits;");
             Execute.Sql("DELETE FROM Cities;");

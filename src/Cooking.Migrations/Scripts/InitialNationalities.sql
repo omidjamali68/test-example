@@ -1,0 +1,8 @@
+﻿INSERT [dbo].[Nationalities] ([Name]) VALUES (N'ایرانی')
+INSERT [dbo].[Nationalities] ([Name]) VALUES (N'ژاپنی')
+INSERT [dbo].[Nationalities] ([Name]) VALUES (N'مکزیکی')
+INSERT [dbo].[Nationalities] ([Name]) VALUES (N'مراکشی')
+INSERT [dbo].[Nationalities] ([Name]) VALUES (N'آلمانی')
+INSERT [dbo].[Nationalities] ([Name]) VALUES (N'فرانسوی')
+INSERT [dbo].[Nationalities] ([Name]) VALUES (N'انگلیسی')
+INSERT [dbo].[Nationalities] ([Name]) VALUES (N'استرالیایی')
