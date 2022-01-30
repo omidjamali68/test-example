@@ -32,7 +32,7 @@ namespace Cooking.Persistence.EF.ApplicationIdentity
                 .IsRequired(false);
 
             builder.Property(_ => _.EmailConfirmed)
-                .IsRequired();
+                .HasDefaultValue(false);
 
             builder.Property(_ => _.NormalizedEmail)
                 .IsRequired(false);
@@ -41,7 +41,7 @@ namespace Cooking.Persistence.EF.ApplicationIdentity
                 .IsRequired(false);
 
             builder.Property(_ => _.PhoneNumberConfirmed)
-                .IsRequired();
+                .HasDefaultValue(false);
 
             builder.Property(_ => _.CreationDate);
 

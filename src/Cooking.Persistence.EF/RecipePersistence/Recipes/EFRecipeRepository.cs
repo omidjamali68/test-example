@@ -28,7 +28,10 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
 
         public async Task<Recipe> FindByIdAsync(long id)
         {
-            return await _recipes.FindAsync(id);
+            return await _recipes.Include(_ => _.RecipeDocuments)
+                .Include(_ => _.RecipeIngredients)
+                .Include(_ => _.RecipeSteps)
+                .FirstOrDefaultAsync(_ => _.Id == id);
         }
 
         public async Task<PageResult<GetAllRecipeDto>> GetAllAsync(
