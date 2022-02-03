@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Cooking.Services.RecipeServices.Recipes.Contracts
 {
@@ -11,5 +9,7 @@ namespace Cooking.Services.RecipeServices.Recipes.Contracts
         public short? Duration { get; set; }
         public string RecipeCategoryTitle { get; set; }
         public string NationalityName { get; set; }
+        public Guid MainDocumentId { get; set; }
+        public string MainDocumentExtension { get; set; }
     }
 }

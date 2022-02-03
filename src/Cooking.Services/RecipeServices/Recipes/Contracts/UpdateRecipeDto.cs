@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Cooking.Services.RecipeServices.RecipeDocuments.Contracts;
@@ -15,6 +16,11 @@ namespace Cooking.Services.RecipeServices.Recipes.Contracts
         public int RecipeCategoryId { get; set; }
         [Required]
         public int NationalityId { get; set; }
+        [Required]
+        public Guid MainDocumentId { get; set; }
+        [Required]
+        [MaxLength(10)]
+        public string MainDocumentExtension { get; set; }
         [Required]
         public HashSet<RecipeIngredientDto> RecipeIngredients { get; set; }
         [Required]

@@ -45,6 +45,8 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
                 FoodName = _.FoodName,
                 Duration = _.Duration,
                 RecipeCategoryTitle = _.RecipeCategory.Title,
+                MainDocumentId = _.MainDocumnetId,
+                MainDocumentExtension = _.MainDocumentExtension,
                 NationalityName = _.Nationality.Name
             });
 
@@ -79,6 +81,8 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
                     Duration = _.Duration,
                     NationalityId = _.NationalityId,
                     RecipeCategoryId = _.RecipeCategoryId,
+                    MainDocumentId = _.MainDocumnetId,
+                    MainDocumentExtension = _.MainDocumentExtension,
                     RecipeDocuments = _.RecipeDocuments.Any()
                     ? _.RecipeDocuments.Select(_ => new RecipeDocumentDto
                     {

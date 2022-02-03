@@ -12,12 +12,15 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
                 .HasKey(_ => _.Id);
 
             builder.Property(_ => _.Id)
-                .ValueGeneratedOnAdd()
-                .IsRequired();
+                .ValueGeneratedOnAdd();
 
             builder.Property(_ => _.FoodName)
-                .HasMaxLength(200)
-                .IsRequired();
+                .HasMaxLength(200);
+
+            builder.Property(_ => _.MainDocumnetId);
+
+            builder.Property(_ => _.MainDocumentExtension)
+            .HasMaxLength(10);
 
             builder.Property(_ => _.Duration)
                 .IsRequired(false);

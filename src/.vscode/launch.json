@@ -2,13 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Migration",
+            "name": "Migrations",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/Cooking.Migrations/bin/Debug/net5.0/Cooking.Migrations.dll",
             "args": [],
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/Cooking.Migrations",
             "stopAtEntry": false,
             "console": "internalConsole"
         },

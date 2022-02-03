@@ -68,6 +68,8 @@ namespace Cooking.Services.RecipeServices.Recipes
             recipe.FoodName = dto.FoodName;
             recipe.NationalityId = dto.NationalityId;
             recipe.RecipeCategoryId = dto.RecipeCategoryId;
+            recipe.MainDocumnetId = dto.MainDocumentId;
+            recipe.MainDocumentExtension = dto.MainDocumentExtension;
             recipe.RecipeDocuments = dto.RecipeDocuments.Select(_ => new RecipeDocument
             {
                 DocumentId = _.DocumentId,
@@ -94,6 +96,8 @@ namespace Cooking.Services.RecipeServices.Recipes
                 FoodName = dto.FoodName,
                 NationalityId = dto.NationalityId,
                 RecipeCategoryId = dto.RecipeCategoryId,
+                MainDocumnetId = dto.MainDocumentId,
+                MainDocumentExtension = dto.MainDocumentExtension,
                 RecipeDocuments = dto.RecipeDocuments.Select(_ => new RecipeDocument
                 {
                     DocumentId = _.DocumentId,
