@@ -5,10 +5,8 @@ using Cooking.Services.RecipeServices.RecipeIngredients.Contracts;
 using Cooking.Services.RecipeServices.Recipes.Contracts;
 using Cooking.Services.RecipeServices.RecipeSteps.Contracts;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Cooking.Persistence.EF.RecipePersistence.Recipes
@@ -70,6 +68,21 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
                         resultList.Count);
             }
             return pageResult;
+        }
+
+        public async Task<ICollection<GetAllRecipeDto>> GetAllByNationalityIdAsync(int nationalityId)
+        {
+            return await _recipes.Where(_ => _.NationalityId == nationalityId)
+                .Select(_ => new GetAllRecipeDto
+                {
+                    Id = _.Id,
+                    FoodName = _.FoodName,
+                    Duration = _.Duration,
+                    RecipeCategoryTitle = _.RecipeCategory.Title,
+                    MainDocumentId = _.MainDocumnetId,
+                    MainDocumentExtension = _.MainDocumentExtension,
+                    NationalityName = _.Nationality.Name
+                }).ToListAsync();
         }
 
         public async Task<GetRecipeDto> GetAsync(long id)

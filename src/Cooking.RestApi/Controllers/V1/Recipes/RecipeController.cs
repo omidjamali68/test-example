@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
 using Cooking.Infrastructure.Application;
 using Cooking.Infrastructure.Web;
 using Cooking.Services.RecipeServices.Recipes.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Cooking.RestApi.Controllers.V1.Recipes
 {
@@ -63,6 +63,12 @@ namespace Cooking.RestApi.Controllers.V1.Recipes
                 searchText,
                 pagination,
                 sortExpression);
+        }
+
+        [HttpGet("by-nationalityId/{nationalityId}")]
+        public async Task<ICollection<GetAllRecipeDto>> GetAllByNationalityId(int nationalityId)
+        {
+            return await _service.GetAllByNationalityIdAsync(nationalityId);
         }
     }
 }
