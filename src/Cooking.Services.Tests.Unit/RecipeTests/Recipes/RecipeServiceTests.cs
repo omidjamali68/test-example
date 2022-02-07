@@ -17,10 +17,8 @@ using Cooking.TestTools.RecipeTestTools.StepOperations;
 using Cooking.TestTools.StateTestTools;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -293,6 +291,40 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.Recipes
             var expected = await _sut.GetRandomForHomePage();
 
             expected.Should().HaveCount(10);
+        }
+
+        [Fact]
+        private async Task Get_returns_recipes_by_nationalityId()
+        {
+            var document = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var ingredientUnit = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var ingredientEgge = new IngredientBuilder(ingredientUnit.Id, document)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+            var stepOperation = new StepOperationBuilder(document)
+            .WithTitle("سرخ کردن")
+            .Build(_context);
+            var recipeCategory = new RecipeCategoryBuilder().Build(_context);
+            var nationality = new NationalityBuilder().Build(_context);
+            var recipe = new RecipeBuilder(nationality.Id, recipeCategory.Id)
+                .WithIngredient(ingredientEgge)
+                .WithStep(stepOperation)
+                .WithDocument(document)
+                .Build(_context);
+
+            var expected = await _sut.GetAllByNationalityIdAsync(nationality.Id);
+
+            expected.Should().HaveCount(1);
+            expected.Should().Contain(_ =>
+            _.Id == recipe.Id &&
+            _.FoodName == recipe.FoodName &&
+            _.Duration == recipe.Duration &&
+            _.RecipeCategoryTitle == recipe.RecipeCategory.Title &&
+            _.NationalityName == recipe.Nationality.Name &&
+            _.MainDocumentId == recipe.MainDocumentId &&
+            _.MainDocumentExtension == recipe.MainDocumentExtension);
         }
     }
 }

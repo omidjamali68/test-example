@@ -15,5 +15,6 @@ namespace Cooking.Services.RecipeServices.Recipes.Contracts
             Pagination pagination,
             Sort<GetAllRecipeDto> sortExpression);
         Task<IList<GetRandomRecipesForHomePageDto>> GetRandomForHomePage();
+        Task<ICollection<GetAllRecipeDto>> GetAllByNationalityIdAsync(int nationalityId);
     }
 }

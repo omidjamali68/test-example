@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Cooking.Entities.Recipes;
 using Cooking.Infrastructure.Application;
 using Cooking.Services.RecipeServices.Recipes.Contracts;
 using Cooking.Services.RecipeServices.Recipes.Exceptions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Cooking.Services.RecipeServices.Recipes
 {
@@ -65,6 +67,12 @@ namespace Cooking.Services.RecipeServices.Recipes
         {
             return await _repository.GetRandomForHomePage();
         }
+
+        public async Task<ICollection<GetAllRecipeDto>> GetAllByNationalityIdAsync(int nationalityId)
+        {
+            return await _repository.GetAllByNationalityIdAsync(nationalityId);
+        }
+
 
         #region Helper Methods
 
