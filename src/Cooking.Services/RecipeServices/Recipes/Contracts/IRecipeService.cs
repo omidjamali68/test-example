@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cooking.Infrastructure.Application;
 
@@ -13,5 +14,6 @@ namespace Cooking.Services.RecipeServices.Recipes.Contracts
             string searchText,
             Pagination pagination,
             Sort<GetAllRecipeDto> sortExpression);
+        Task<IList<GetRandomRecipesForHomePageDto>> GetRandomForHomePage();
     }
 }

@@ -13,8 +13,8 @@ namespace Cooking.Migrations
 
         public override void Up()
         {
-            Alter.Table("Recipes").AddColumn("MainDocumentId").AsGuid().NotNullable();
-            Alter.Table("Recipes").AddColumn("MainDocumentExtension").AsString(10).NotNullable();
+            Alter.Table("Recipes").AddColumn("MainDocumentId").AsGuid().NotNullable().WithDefaultValue("00000000-0000-0000-0000-000000000000");
+            Alter.Table("Recipes").AddColumn("MainDocumentExtension").AsString(10).NotNullable().WithDefaultValue("");
         }
     }
 }

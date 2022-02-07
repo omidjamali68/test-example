@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Cooking.Entities.Recipes;
 using Cooking.Infrastructure.Application;
@@ -60,6 +61,11 @@ namespace Cooking.Services.RecipeServices.Recipes
             return await _repository.GetAllAsync(searchText, pagination, sortExpression);
         }
 
+        public async Task<IList<GetRandomRecipesForHomePageDto>> GetRandomForHomePage()
+        {
+            return await _repository.GetRandomForHomePage();
+        }
+
         #region Helper Methods
 
         private static void ExchangeEntityWithUpdateDto(UpdateRecipeDto dto, Recipe recipe)
@@ -68,7 +74,7 @@ namespace Cooking.Services.RecipeServices.Recipes
             recipe.FoodName = dto.FoodName;
             recipe.NationalityId = dto.NationalityId;
             recipe.RecipeCategoryId = dto.RecipeCategoryId;
-            recipe.MainDocumnetId = dto.MainDocumentId;
+            recipe.MainDocumentId = dto.MainDocumentId;
             recipe.MainDocumentExtension = dto.MainDocumentExtension;
             recipe.RecipeDocuments = dto.RecipeDocuments.Select(_ => new RecipeDocument
             {
@@ -96,7 +102,7 @@ namespace Cooking.Services.RecipeServices.Recipes
                 FoodName = dto.FoodName,
                 NationalityId = dto.NationalityId,
                 RecipeCategoryId = dto.RecipeCategoryId,
-                MainDocumnetId = dto.MainDocumentId,
+                MainDocumentId = dto.MainDocumentId,
                 MainDocumentExtension = dto.MainDocumentExtension,
                 RecipeDocuments = dto.RecipeDocuments.Select(_ => new RecipeDocument
                 {
@@ -121,10 +127,10 @@ namespace Cooking.Services.RecipeServices.Recipes
 
         #region Guard Methods
 
-        public void GuardAgainstRecipeNotFound(Recipe recipe)
+        private void GuardAgainstRecipeNotFound(Recipe recipe)
         {
             _ = recipe ?? throw new RecipeNotFoundException();
-        }       
+        }
 
         #endregion
     }

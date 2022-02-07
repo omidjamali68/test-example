@@ -45,7 +45,7 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
                 FoodName = _.FoodName,
                 Duration = _.Duration,
                 RecipeCategoryTitle = _.RecipeCategory.Title,
-                MainDocumentId = _.MainDocumnetId,
+                MainDocumentId = _.MainDocumentId,
                 MainDocumentExtension = _.MainDocumentExtension,
                 NationalityName = _.Nationality.Name
             });
@@ -81,7 +81,7 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
                     Duration = _.Duration,
                     NationalityId = _.NationalityId,
                     RecipeCategoryId = _.RecipeCategoryId,
-                    MainDocumentId = _.MainDocumnetId,
+                    MainDocumentId = _.MainDocumentId,
                     MainDocumentExtension = _.MainDocumentExtension,
                     RecipeDocuments = _.RecipeDocuments.Any()
                     ? _.RecipeDocuments.Select(_ => new RecipeDocumentDto
@@ -106,6 +106,18 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
                     }).ToHashSet()
                     : default
                 }).SingleOrDefaultAsync();
+        }
+
+        public async Task<IList<GetRandomRecipesForHomePageDto>> GetRandomForHomePage()
+        {
+            return await _recipes.Take(10)
+                .Select(_ => new GetRandomRecipesForHomePageDto
+                {
+                    FoodName = _.FoodName,
+                    Duration = _.Duration,
+                    MainDocumentId = _.MainDocumentId,
+                    MainDocumentExtension = _.MainDocumentExtension
+                }).ToListAsync();
         }
 
         public void Remove(Recipe recipe)

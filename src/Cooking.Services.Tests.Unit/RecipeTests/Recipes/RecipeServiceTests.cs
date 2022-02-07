@@ -155,7 +155,7 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.Recipes
             var recipe = new RecipeBuilder(nationality.Id, recipeCategory.Id)
                 .WithIngredient(ingredientEgge)
                 .WithStep(stepOperation)
-                .WithDocument(document.Id, document.Extension)
+                .WithDocument(document)
                 .Build(_context);
             
             var expected = await _sut.GetAsync(recipe.Id);
@@ -245,7 +245,7 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.Recipes
             var recipe = new RecipeBuilder(nationality.Id, recipeCategory.Id)
                 .WithIngredient(ingredientEgge)
                 .WithStep(stepOperation)
-                .WithDocument(document.Id, document.Extension)
+                .WithDocument(document)
                 .Build(_context);
 
             var expected = await _sut.GetAllAsync(
@@ -260,6 +260,39 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.Recipes
             _.Duration == recipe.Duration &&
             _.RecipeCategoryTitle == recipe.RecipeCategory.Title &&
             _.NationalityName == recipe.Nationality.Name);
+        }
+
+        [Fact]
+        private async Task Get_get_10_random_recipes_properly()
+        {
+            var otherDocument = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var mainDocument = DocumentFactory.CreateDocument(_context, DocumentStatus.Register);
+            var ingredientUnit = new IngredientUnitBuilder()
+                .WithTitle("تعداد")
+                .Build(_context);
+            var ingredientEgge = new IngredientBuilder(ingredientUnit.Id, otherDocument)
+                .WithTitle("تخم مرغ")
+                .Build(_context);
+            var stepOperation = new StepOperationBuilder(otherDocument)
+            .WithTitle("سرخ کردن")
+            .Build(_context);
+            var recipeCategory = new RecipeCategoryBuilder().Build(_context);
+            var nationality = new NationalityBuilder().Build(_context);
+
+            for(int i =1; i <= 11; i++)
+            {
+                var recipe = new RecipeBuilder(nationality.Id, recipeCategory.Id)
+                .WithIngredient(ingredientEgge)
+                .WithStep(stepOperation)
+                .WithDocument(otherDocument)
+                .WithFoodName("نیمرو" + i.ToString())
+                .WithMainDocument(mainDocument)
+                .Build(_context);
+            }
+
+            var expected = await _sut.GetRandomForHomePage();
+
+            expected.Should().HaveCount(10);
         }
     }
 }

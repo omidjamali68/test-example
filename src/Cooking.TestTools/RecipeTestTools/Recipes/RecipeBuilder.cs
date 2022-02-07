@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cooking.Entities.Documents;
 using Cooking.Entities.Ingredients;
 using Cooking.Entities.Recipes;
 using Cooking.Infrastructure.Test;
@@ -35,10 +36,23 @@ namespace Cooking.TestTools.RecipeTestTools.Recipes
             return this;
         }
 
-        public RecipeBuilder WithDocument(Guid docId, string extension)
+        public RecipeBuilder WithDocument(Document otherDocument)
         {
             _recipe.RecipeDocuments
-                .Add(RecipeDocumentFactory.CreateInstance(docId, extension));
+                .Add(RecipeDocumentFactory.CreateInstance(otherDocument.Id, otherDocument.Extension));
+            return this;
+        }
+
+        public RecipeBuilder WithFoodName(string foodName)
+        {
+            _recipe.FoodName = foodName;
+            return this;
+        }
+
+        public RecipeBuilder WithMainDocument(Document mainDocument)
+        {
+            _recipe.MainDocumentId = mainDocument.Id;
+            _recipe.MainDocumentExtension = mainDocument.Extension;
             return this;
         }
 
@@ -46,6 +60,8 @@ namespace Cooking.TestTools.RecipeTestTools.Recipes
         {
             context.Manipulate(_ => _.Recipes.Add(_recipe));
             return _recipe;
-        }        
+        }
+
+        
     }
 }

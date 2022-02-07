@@ -17,7 +17,7 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
             builder.Property(_ => _.FoodName)
                 .HasMaxLength(200);
 
-            builder.Property(_ => _.MainDocumnetId);
+            builder.Property(_ => _.MainDocumentId);
 
             builder.Property(_ => _.MainDocumentExtension)
             .HasMaxLength(10);
