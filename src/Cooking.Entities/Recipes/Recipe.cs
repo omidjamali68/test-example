@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cooking.Entities.Documents;
 using Cooking.Entities.States;
 
 namespace Cooking.Entities.Recipes
@@ -16,6 +17,7 @@ namespace Cooking.Entities.Recipes
         public long Id { get; set; }
         public string FoodName { get; set; }
         public short? Duration { get; set; }
+        [DocumentFlag]
         public Guid MainDocumentId { get; set; }
         public string MainDocumentExtension { get; set; }
 

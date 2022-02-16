@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cooking.Entities.Documents;
+using System;
 
 namespace Cooking.Entities.Recipes
 {
@@ -6,6 +7,7 @@ namespace Cooking.Entities.Recipes
     {
         public long RecipeId { get; set; }
         public Recipe Recipe { get; set; }
+        [DocumentFlag]
         public Guid DocumentId { get; set; }
         public string Extension { get; set; }
     }

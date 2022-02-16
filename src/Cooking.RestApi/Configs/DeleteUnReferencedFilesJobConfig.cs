@@ -1,3 +1,12 @@
+using Cooking.Entities.Documents;
+using Cooking.Entities.Recipes;
+using Cooking.Infrastructure;
+using Cooking.Persistence.EF;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,18 +14,6 @@ using System.Linq.Dynamic.Core;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Cooking.Entities;
-using Cooking.Entities.Documents;
-using Cooking.Entities.Recipes;
-using Cooking.Infrastructure;
-using Cooking.Persistence.EF;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Cooking.RestApi.Configs
 {
@@ -99,15 +96,18 @@ namespace Cooking.RestApi.Configs
             var assembly = Assembly.GetAssembly(typeof(RecipeDocument));
 
             var typeWithDocuments = assembly?.GetTypes()
-                .Where(_ => _.GetProperties().Any(_ => _.Name == "AvatarId" || _.Name == "DocumentId"))
+                .Where(_ => _.GetProperties().Any(_ =>
+                    Attribute.GetCustomAttribute(_, typeof(DocumentFlagAttribute)) != null));
+            var result = typeWithDocuments
                 .Select(_ => new DocumentTypeAndColumnDto
                 {
                     Type = _,
-                    ColumnSpecifier = _.GetProperties()?
-                        .FirstOrDefault(_ => _.Name == "AvatarId" || _.Name == "DocumentId")?.Name
+                    ColumnSpecifiers = _.GetProperties()?.Where(_ =>
+                        Attribute.GetCustomAttribute(_, typeof(DocumentFlagAttribute)) != null)?
+                            .Select(_ => _.Name).ToList()
                 }).ToList();
 
-            return typeWithDocuments ?? new List<DocumentTypeAndColumnDto>();
+            return result ?? new List<DocumentTypeAndColumnDto>();
         }
 
         private async Task DeleteUnReferencedDocuments(EFDataContext dataContext, CancellationToken stoppingToken,
@@ -144,11 +144,14 @@ namespace Cooking.RestApi.Configs
         private List<Guid> FindReferencedDocumentIds(EFDataContext dataContext, List<DocumentTypeAndColumnDto> documentTypes)
         {
             List<Guid> referencedDocumentIds = new List<Guid>();
-            foreach (var item in documentTypes)
+            foreach (var entity in documentTypes)
             {
-                referencedDocumentIds = referencedDocumentIds.Union(dataContext.Set(item.Type)
-                    .Where($"_ =>  _.{item.ColumnSpecifier} != null")
-                    .Select($"_ => _.{item.ColumnSpecifier}").ToDynamicList<Guid>()).ToList();
+                foreach (var columnName in entity.ColumnSpecifiers)
+                {
+                    referencedDocumentIds = referencedDocumentIds.Union(dataContext.Set(entity.Type)
+                    .Where($"_ =>  _.{columnName} != null")
+                    .Select($"_ => _.{columnName}").ToDynamicList<Guid>()).ToList();
+                }
             }
 
             return referencedDocumentIds;
@@ -157,7 +160,7 @@ namespace Cooking.RestApi.Configs
 
     class DocumentTypeAndColumnDto
     {
-        public Type? Type { get; set; }
-        public string? ColumnSpecifier { get; set; }
+        public Type Type { get; set; }
+        public List<string> ColumnSpecifiers { get; set; }
     }
 }

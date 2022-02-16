@@ -1,4 +1,5 @@
-﻿using Cooking.Entities.Recipes;
+﻿using Cooking.Entities.Documents;
+using Cooking.Entities.Recipes;
 using System;
 using System.Collections.Generic;
 
@@ -13,6 +14,7 @@ namespace Cooking.Entities.Ingredients
 
         public long Id { get; set; }
         public string Title { get; set; }
+        [DocumentFlag]
         public Guid AvatarId { get; set; }
         public string Extension { get; set; }
 
