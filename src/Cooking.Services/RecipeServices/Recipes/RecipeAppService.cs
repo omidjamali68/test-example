@@ -73,6 +73,12 @@ namespace Cooking.Services.RecipeServices.Recipes
             return await _repository.GetAllByNationalityIdAsync(nationalityId);
         }
 
+        public async Task<ICollection<GetRecipesByIngredientsDto>> GetRecipesByIngredientsAsync(
+            ICollection<long> ingredientIds)
+        {
+            return await _repository.GetByIngredientsAsync(ingredientIds);
+        }
+
 
         #region Helper Methods
 

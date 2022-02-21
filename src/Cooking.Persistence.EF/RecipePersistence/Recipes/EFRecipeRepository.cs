@@ -121,6 +121,25 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
                 }).SingleOrDefaultAsync();
         }
 
+        public async Task<ICollection<GetRecipesByIngredientsDto>> GetByIngredientsAsync(
+            ICollection<long> ingredientIds)
+        {
+            return await _recipes
+               .Where(_ => _.RecipeIngredients.Any(r => ingredientIds.Contains(r.IngredientId)))
+               .Select(_ => new GetRecipesByIngredientsDto
+               {
+                   FoodName = _.FoodName,
+                   Duration = _.Duration,
+                   MainDocumentId = _.MainDocumentId,
+                   MainDocumentExtension = _.MainDocumentExtension,
+                   IngredientIds = _.RecipeIngredients
+                   .Where(r => ingredientIds.Contains(r.IngredientId))
+                   .Select(_ => _.IngredientId)
+               })
+               .OrderByDescending(_ => _.IngredientIds.Count() >= ingredientIds.Count())
+               .ToListAsync();
+        }
+
         public async Task<IList<GetRandomRecipesForHomePageDto>> GetRandomForHomePage()
         {
             return await _recipes.Take(10)

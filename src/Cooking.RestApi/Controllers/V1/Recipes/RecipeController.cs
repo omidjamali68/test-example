@@ -77,5 +77,12 @@ namespace Cooking.RestApi.Controllers.V1.Recipes
         {
             return await _service.GetRandomForHomePage();
         }
+                
+        [HttpGet("by_ingredientIds")]
+        public async Task<ICollection<GetRecipesByIngredientsDto>> GetRecipesByIngredients(
+            [FromQuery] ICollection<long> ingredientIds)
+        {
+            return await _service.GetRecipesByIngredientsAsync(ingredientIds);
+        }
     }
 }
