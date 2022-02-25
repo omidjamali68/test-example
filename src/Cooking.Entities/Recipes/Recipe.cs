@@ -17,6 +17,7 @@ namespace Cooking.Entities.Recipes
         public long Id { get; set; }
         public string FoodName { get; set; }
         public short? Duration { get; set; }
+        public byte ForHowManyPeople { get; set; }
         [DocumentFlag]
         public Guid MainDocumentId { get; set; }
         public string MainDocumentExtension { get; set; }

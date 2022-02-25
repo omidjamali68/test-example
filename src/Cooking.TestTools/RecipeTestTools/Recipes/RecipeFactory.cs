@@ -23,6 +23,7 @@ namespace Cooking.TestTools.RecipeTestTools.Recipes
              short duration,
              int categoryId,
              int nationalityId, 
+             byte forHowManyPeople,
              HashSet<RecipeIngredientDto> ingredients,
              HashSet<RecipeDocumentDto> documents,
              HashSet<RecipeStepDto> steps
@@ -33,6 +34,7 @@ namespace Cooking.TestTools.RecipeTestTools.Recipes
                 FoodName = foodName,
                 NationalityId = nationalityId,
                 RecipeCategoryId = categoryId,
+                ForHowManyPeople = forHowManyPeople,
                 RecipeDocuments = documents,
                 RecipeIngredients = ingredients,
                 RecipeSteps = steps

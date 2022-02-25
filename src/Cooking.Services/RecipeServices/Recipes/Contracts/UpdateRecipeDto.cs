@@ -13,6 +13,8 @@ namespace Cooking.Services.RecipeServices.Recipes.Contracts
         public string FoodName { get; set; }
         public short? Duration { get; set; }
         [Required]
+        public byte ForHowManyPeople { get; set; }
+        [Required]
         public int RecipeCategoryId { get; set; }
         [Required]
         public int NationalityId { get; set; }

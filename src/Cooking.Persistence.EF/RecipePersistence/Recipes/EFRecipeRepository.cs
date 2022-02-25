@@ -93,6 +93,7 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
                     FoodName = _.FoodName,
                     Duration = _.Duration,
                     NationalityId = _.NationalityId,
+                    ForHowManyPeople = _.ForHowManyPeople,
                     RecipeCategoryId = _.RecipeCategoryId,
                     MainDocumentId = _.MainDocumentId,
                     MainDocumentExtension = _.MainDocumentExtension,

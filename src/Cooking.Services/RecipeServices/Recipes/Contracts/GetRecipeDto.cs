@@ -10,6 +10,7 @@ namespace Cooking.Services.RecipeServices.Recipes.Contracts
     {
         public string FoodName { get; set; }
         public short? Duration { get; set; }
+        public byte ForHowManyPeople { get; set; }
         public int RecipeCategoryId { get; set; }
         public int NationalityId { get; set; }
         public Guid MainDocumentId { get; set; }

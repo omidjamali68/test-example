@@ -86,7 +86,8 @@ namespace Cooking.Specs.Recipes.Recipes.Add
                 .Build(_context);
         }
 
-        [When("یک دستور پخت با نام غذا: نیمرو، زمان آماده سازی: 5 دقیقه و گروه دستور پخت: حاضری و کشور: ایران و مرحله" +
+        [When("یک دستور پخت با نام غذا: نیمرو، زمان آماده سازی: 5 دقیقه، برای " +
+            "تعداد: 2نفر و گروه دستور پخت: حاضری و کشور: ایران و مرحله" +
         " پخت با عنوان: سرخ کردن به همراه فایل های مربوطه در فهرست دستور پخت ها تعریف میکنم")]
         private async Task When()
         {
@@ -107,20 +108,24 @@ namespace Cooking.Specs.Recipes.Recipes.Add
             {
                 RecipeDocumentFactory.GenerateDto(_doc.Id)
             };
-            _dto = RecipeFactory.GenerateAddDto(
-                "نیمرو",
-                5,
-                recipeCategory.Id,
-                nationality.Id,
-                ingredients,
-                documents,
-                steps
-                );
+            var mainDocument = DocumentFactory.CreateDocument(_context, DocumentStatus.Reserve);
+            _dto = new RecipeAddDtoBuilder()
+                .WithCategoryId(recipeCategory.Id)
+                .WithDuration(5)
+                .WithFooodName("نیمرو")
+                .WithForHowManyPeople(2)
+                .WithNationalityId(nationality.Id)
+                .WithSteps(steps)
+                .WithIngredients(ingredients)
+                .WithDocuments(documents)
+                .WithMainDocument(mainDocument)
+                .Build();
+                
             _addedRecipeId = await _sut.Add(_dto);
         }
 
         [Then("باید یک دستور پخت با نام غذا: نیمرو،" +
-        " زمان آماده سازی: 5 دقیقه و گروه دستور پخت: حاضری و کشور: ایران و مرحله پخت" +
+        " زمان آماده سازی: 5 دقیقه، برای تعداد: 2نفر و گروه دستور پخت: حاضری و کشور: ایران و مرحله پخت" +
         " با عنوان: سرخ کردن به همراه فایل های مربوطه در فهرست دستور پخت ها وجود داشته باشد")]
         private void Then()
         {
@@ -131,7 +136,9 @@ namespace Cooking.Specs.Recipes.Recipes.Add
                 .FirstOrDefault(_ => _.Id == _addedRecipeId);
             expected.Duration.Should().Be(_dto.Duration);
             expected.FoodName.Should().Be(_dto.FoodName);
+            expected.MainDocumentId.Should().Be(_dto.MainDocumentId);
             expected.NationalityId.Should().Be(_dto.NationalityId);
+            expected.ForHowManyPeople.Should().Be(_dto.ForHowManyPeople);
             expected.RecipeCategoryId.Should().Be(_dto.RecipeCategoryId);
             expected.RecipeSteps.Should()
                 .Contain(_ => _.Description == _dto.RecipeSteps.First().Description);
