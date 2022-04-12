@@ -73,15 +73,18 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.Recipes
             {
                 RecipeDocumentFactory.GenerateDto(doc.Id)
             };
-            var dto = RecipeFactory.GenerateAddDto(
-                "نیمرو",
-                5,
-                recipeCategory.Id,
-                nationality.Id,
-                ingredients,
-                documents,
-                steps
-                );
+            var mainDocument = DocumentFactory.CreateDocument(_context, DocumentStatus.Reserve);
+            var dto = new RecipeAddDtoBuilder()
+                .WithCategoryId(recipeCategory.Id)
+                .WithDuration(5)
+                .WithFooodName("نیمرو")
+                .WithForHowManyPeople(2)
+                .WithNationalityId(nationality.Id)
+                .WithSteps(steps)
+                .WithIngredients(ingredients)
+                .WithDocuments(documents)
+                .WithMainDocument(mainDocument)
+                .Build();
 
             var addedRecipeId = await _sut.Add(dto);
 

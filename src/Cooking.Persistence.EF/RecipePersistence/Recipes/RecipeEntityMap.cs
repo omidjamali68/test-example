@@ -25,6 +25,8 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
             builder.Property(_ => _.Duration)
                 .IsRequired(false);
 
+            builder.Property(_ => _.ForHowManyPeople);
+
             builder.HasOne(_ => _.RecipeCategory)
                 .WithMany(_ => _.Recipes)
                 .HasForeignKey(_ => _.RecipeCategoryId)

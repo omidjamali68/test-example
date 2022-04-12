@@ -87,6 +87,7 @@ namespace Cooking.Services.RecipeServices.Recipes
             recipe.Duration = dto.Duration;
             recipe.FoodName = dto.FoodName;
             recipe.NationalityId = dto.NationalityId;
+            recipe.ForHowManyPeople = dto.ForHowManyPeople;
             recipe.RecipeCategoryId = dto.RecipeCategoryId;
             recipe.MainDocumentId = dto.MainDocumentId;
             recipe.MainDocumentExtension = dto.MainDocumentExtension;
@@ -115,6 +116,7 @@ namespace Cooking.Services.RecipeServices.Recipes
                 Duration = dto.Duration,
                 FoodName = dto.FoodName,
                 NationalityId = dto.NationalityId,
+                ForHowManyPeople = dto.ForHowManyPeople,
                 RecipeCategoryId = dto.RecipeCategoryId,
                 MainDocumentId = dto.MainDocumentId,
                 MainDocumentExtension = dto.MainDocumentExtension,
