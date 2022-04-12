@@ -6,6 +6,7 @@ namespace Cooking.Services.RecipeServices.Recipes.Contracts
 {
     public class GetRecipesByIngredientsDto
     {
+        public long Id { get; set; }
         public string FoodName { get; set; }
         public short? Duration { get; set; }
         public Guid MainDocumentId { get; set; }

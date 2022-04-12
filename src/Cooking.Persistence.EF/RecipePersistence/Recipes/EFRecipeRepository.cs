@@ -128,6 +128,7 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
                .Where(_ => _.RecipeIngredients.Any(r => ingredientIds.Contains(r.IngredientId)))
                .Select(_ => new GetRecipesByIngredientsDto
                {
+                   Id = _.Id,
                    FoodName = _.FoodName,
                    Duration = _.Duration,
                    MainDocumentId = _.MainDocumentId,
