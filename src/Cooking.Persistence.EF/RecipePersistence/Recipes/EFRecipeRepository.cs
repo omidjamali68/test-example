@@ -105,18 +105,22 @@ namespace Cooking.Persistence.EF.RecipePersistence.Recipes
                     }).ToHashSet()
                     : default,
                     RecipeIngredients = _.RecipeIngredients.Any()
-                    ? _.RecipeIngredients.Select(_ => new RecipeIngredientDto
+                    ? _.RecipeIngredients.Select(_ => new GetRecipeIngredientDto
                     {
                         IngredientId = _.IngredientId,
-                        Quantity = _.Quantity
+                        Quantity = _.Quantity,
+                        AvatarId = _.Ingredient.AvatarId,
+                        Title = _.Ingredient.Title,
+                        UnitTitle = _.Ingredient.IngredientUnit.Title
                     }).ToHashSet()
                     : default,
                     RecipeSteps = _.RecipeSteps.Any()
-                    ? _.RecipeSteps.Select(_ => new RecipeStepDto
+                    ? _.RecipeSteps.Select(_ => new GetRecipeStepDto
                     {
                         StepOperationId = _.StepOperationId,
                         Description = _.Description,
-                        Order = _.Order
+                        Order = _.Order,
+                        AvatarId = _.StepOperation.AvatarId
                     }).ToHashSet()
                     : default
                 }).SingleOrDefaultAsync();

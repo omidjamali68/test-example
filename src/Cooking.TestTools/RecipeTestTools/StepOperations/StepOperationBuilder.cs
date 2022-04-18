@@ -24,11 +24,19 @@ namespace Cooking.TestTools.RecipeTestTools.StepOperations
             return this;
         }
 
+        public StepOperationBuilder WithAvatar(Document document)
+        {
+            _stepOperation.AvatarId = document.Id;
+            _stepOperation.Extension = document.Extension;
+            return this;
+        }
+
         public StepOperation Build(EFDataContext context)
         {
             context.Manipulate(_ => _.StepOperations.Add(_stepOperation));
             return _stepOperation;
         }
 
+        
     }
 }

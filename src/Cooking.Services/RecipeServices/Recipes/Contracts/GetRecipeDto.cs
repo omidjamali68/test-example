@@ -1,6 +1,4 @@
 ﻿using Cooking.Services.RecipeServices.RecipeDocuments.Contracts;
-using Cooking.Services.RecipeServices.RecipeIngredients.Contracts;
-using Cooking.Services.RecipeServices.RecipeSteps.Contracts;
 using System;
 using System.Collections.Generic;
 
@@ -15,8 +13,8 @@ namespace Cooking.Services.RecipeServices.Recipes.Contracts
         public int NationalityId { get; set; }
         public Guid MainDocumentId { get; set; }
         public string MainDocumentExtension { get; set; }
-        public HashSet<RecipeIngredientDto> RecipeIngredients { get; set; }
+        public HashSet<GetRecipeIngredientDto> RecipeIngredients { get; set; }
         public HashSet<RecipeDocumentDto> RecipeDocuments { get; set; }
-        public HashSet<RecipeStepDto> RecipeSteps { get; set; }
+        public HashSet<GetRecipeStepDto> RecipeSteps { get; set; }
     }
 }

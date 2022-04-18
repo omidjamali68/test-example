@@ -1,4 +1,6 @@
 
+using System;
+
 namespace Cooking.Services.RecipeServices.RecipeIngredients.Contracts
 {
     public class RecipeIngredientDto

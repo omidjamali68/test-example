@@ -147,9 +147,11 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.Recipes
                 .Build(_context);
             var ingredientEgge = new IngredientBuilder(ingredientUnit.Id, document)
                 .WithTitle("تخم مرغ")
+                .WithAvatar(document)
                 .Build(_context);
             var stepOperation = new StepOperationBuilder(document)
             .WithTitle("سرخ کردن")
+            .WithAvatar(document)
             .Build(_context);
             var recipeCategory = new RecipeCategoryBuilder().Build(_context);
             var nationality = new NationalityBuilder().Build(_context);
@@ -167,14 +169,17 @@ namespace Cooking.Services.Tests.Unit.RecipeTests.Recipes
             expected.NationalityId.Should().Be(recipe.NationalityId);
             expected.RecipeIngredients.Should().Contain(_ => 
             _.IngredientId == recipe.RecipeIngredients.First().IngredientId &&
-            _.Quantity == recipe.RecipeIngredients.First().Quantity);
+            _.Quantity == recipe.RecipeIngredients.First().Quantity &&
+            _.AvatarId == ingredientEgge.AvatarId &&
+            _.UnitTitle == ingredientUnit.Title);
             expected.RecipeDocuments.Should().Contain(_ =>
             _.DocumentId == recipe.RecipeDocuments.First().DocumentId &&
             _.Extension == recipe.RecipeDocuments.First().Extension);
             expected.RecipeSteps.Should().Contain(_ =>
             _.Order == recipe.RecipeSteps.First().Order &&
             _.Description == recipe.RecipeSteps.First().Description &&
-            _.StepOperationId == recipe.RecipeSteps.First().StepOperationId);
+            _.StepOperationId == recipe.RecipeSteps.First().StepOperationId &&
+            _.AvatarId == stepOperation.AvatarId);
         }
 
         [Fact]

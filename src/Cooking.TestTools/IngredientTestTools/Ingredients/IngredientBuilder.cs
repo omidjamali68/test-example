@@ -1,4 +1,5 @@
-﻿using Cooking.Entities.Documents;
+﻿using System;
+using Cooking.Entities.Documents;
 using Cooking.Entities.Ingredients;
 using Cooking.Infrastructure.Test;
 using Cooking.Persistence.EF;
@@ -23,10 +24,19 @@ namespace Cooking.TestTools.IngredientTestTools.Ingredients
             return this;
         }
 
+        public IngredientBuilder WithAvatar(Document document)
+        {
+            _ingredient.AvatarId = document.Id;
+            _ingredient.Extension = document.Extension;
+            return this;
+        }
+
         public Ingredient Build(EFDataContext context)
         {
             context.Manipulate(_ => _.Ingredients.Add(_ingredient));
             return _ingredient;
         }
+
+        
     }
 }
