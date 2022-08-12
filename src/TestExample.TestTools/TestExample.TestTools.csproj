@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+     <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.18.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TestExample.Entities\TestExample.Entities.csproj" />
+    <ProjectReference Include="..\TestExample.Persistence.EF\TestExample.Persistence.EF.csproj" />
+    <ProjectReference Include="..\TestExample.Services\TestExample.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common" />
+  </ItemGroup>
+
+</Project>

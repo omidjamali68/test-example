@@ -6,9 +6,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Cooking.Migrations/bin/Debug/net5.0/Cooking.Migrations.dll",
+            "program": "${workspaceFolder}/TestExample.Migrations/bin/Debug/net6.0/TestExample.Migrations.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Cooking.Migrations",
+            "cwd": "${workspaceFolder}/TestExample.Migrations",
             "stopAtEntry": false,
             "console": "internalConsole"
         },
@@ -21,9 +21,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Cooking.RestApi/bin/Debug/net5.0/Cooking.RestApi.dll",
+            "program": "${workspaceFolder}/TestExample.RestApi/bin/Debug/net6.0/TestExample.RestApi.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Cooking.RestApi",
+            "cwd": "${workspaceFolder}/TestExample.RestApi",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {
@@ -37,6 +37,5 @@
                 "/Views": "${workspaceFolder}/Views"
             }
         }
-
     ]
 }

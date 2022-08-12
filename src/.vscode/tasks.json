@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Cooking.RestApi/Cooking.RestApi.csproj",
+                "${workspaceFolder}/TestExample.RestApi/TestExample.RestApi.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/Cooking.RestApi/Cooking.RestApi.csproj",
+                "${workspaceFolder}/TestExample.RestApi/TestExample.RestApi.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -32,9 +32,8 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/Cooking.RestApi/Cooking.RestApi.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "--project",
+                "${workspaceFolder}/TestExample.RestApi/TestExample.RestApi.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
